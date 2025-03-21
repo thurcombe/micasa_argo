@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  tls.key: '{{ .letsencryptAccountTLSKey }}'
+kind: Secret
+metadata:
+  name: letsencrypt-issuer-account-key
+type: Opaque
