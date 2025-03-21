@@ -4,7 +4,7 @@ metadata:
   name: letsencrypt
 spec:
   acme:
-    email: '{{ .letsencryptUserEmail }}'
+    email: '{{ .Values.letsencryptUserEmail }}'
     preferredChain: ""
     privateKeySecretRef:
       name: letsencrypt-issuer-account-key
