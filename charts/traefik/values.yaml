@@ -1,0 +1,52 @@
+additionalArguments:
+- "--log.level=debug"
+- "--providers.kubernetesingress.ingressendpoint.publishedservice=traefik/traefik"
+- "--serverstransport.insecureskipverify=true"
+- "--api.insecure=true"
+- "--providers.http.tls.insecureskipverify"
+- "--entrypoints.dns-tcp.address=:53/tcp"
+- "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+- "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+- "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+ports:
+  web:
+    expose: true
+    port: 80
+    protocol: TCP
+  websecure:
+    expose: true
+    port: 443
+    protocol: TCP
+  dns-udp:
+    expose: true
+    port: 53
+    protocol: UDP
+    exposedPort: 53
+ingressRoute:
+  dashboard:
+    enabled: false
+
+additionalVolumeMounts:
+- name: wildcard-ssl
+  mountPath: /ssl
+
+deployment:
+  additionalVolumes:
+  - name: wildcard-ssl
+    secret:
+      secretName: star-dot-certificate
+
+tls:
+  options:
+    default:
+      sniStrict: true
+  certificates:
+    certFile: /ssl/tls.crt
+    keyFile: /ssl/tls.key
+    stores:
+    - default
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /ssl/tls.crt
+        keyFile: /ssl/tls.key
