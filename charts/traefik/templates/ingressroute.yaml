@@ -1,0 +1,19 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dashboard
+  namespace: traefik
+spec:
+  entryPoints:
+  - web
+  - websecure
+  tls:
+    secretName: traefik-micasa-systems
+  routes:
+  - match: Host(`traefik.{{ .Values.clusterDNSName }}`)
+    kind: Rule
+    services:
+    - name: api@internal
+      kind: TraefikService
+    middlewares:
+    - name: auth
