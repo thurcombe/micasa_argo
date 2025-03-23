@@ -28,7 +28,7 @@ dualStack:
 
 dnsHostPort:
   # -- set this to true to enable dnsHostPort
-  enabled: false
+  enabled: true
   # -- default port for this pod
   port: 53
 
@@ -145,8 +145,8 @@ ingress:
   # kubernetes.io/tls-acme: "true"
   path: /
   hosts:
-  # virtualHost (default value is pi.hole) will be appended to the hosts
-  - pihole.k3s.micasa.systems
+    # virtualHost (default value is pi.hole) will be appended to the hosts
+    - pihole.k3s.micasa.systems
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -203,7 +203,7 @@ persistentVolumeClaim:
   annotations: {}
 
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
 
   size: "500Mi"
 
@@ -293,10 +293,10 @@ doh:
       probe:
         exec:
           command:
-          - nslookup
-          - -po=5053
-          - cloudflare.com
-          - "127.0.0.1"
+            - nslookup
+            - -po=5053
+            - cloudflare.com
+            - "127.0.0.1"
       # -- defines the initial delay for the liveness probe
       initialDelaySeconds: 60
       # -- defines the failure threshold for the liveness probe
@@ -489,6 +489,5 @@ podDnsConfig:
   enabled: true
   policy: "None"
   nameservers:
-  - 127.0.0.1
-  - 8.8.8.8
-
+    - 127.0.0.1
+    - 8.8.8.8
