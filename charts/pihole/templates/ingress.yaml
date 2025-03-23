@@ -7,10 +7,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - { { .Values.dnsName } }
+        - "{{ .Values.dnsName }}"
       secretName: pihole-web-certificate
   rules:
-    - host: { { .Values.dnsName } }
+    - host: "{{ .Values.dnsName }}"
       http:
         paths:
           - path: /
