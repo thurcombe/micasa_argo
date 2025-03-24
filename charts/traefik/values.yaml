@@ -5,8 +5,6 @@ traefik:
     - "--serverstransport.insecureskipverify=true"
     - "--api.insecure=true"
     - "--providers.http.tls.insecureskipverify"
-    - "--entrypoints.dns-tcp.address=:53/tcp"
-    - "--entrypoints.dns-udp.address=:53/udp"
     - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
     - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
     - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
