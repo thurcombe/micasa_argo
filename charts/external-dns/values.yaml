@@ -5,9 +5,10 @@ env:
       name: pihole-admin
       key: password
 registry: noop
-provider: pihole
+provider: 
+  name: pihole
 sources:
 #- service
 - ingress
 extraArgs:
-- --pihole-server=http://pihole-web.pihole.svc.cluster.local
+- --pihole-server=http://pihole-web.pihole.svc.cluster.local  
