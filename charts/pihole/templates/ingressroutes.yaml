@@ -9,7 +9,7 @@ spec:
   routes:
     - services:
         - name: pihole-dns-udp
-          port: 53
+          port: 8753
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
@@ -23,4 +23,4 @@ spec:
     - match: HostSNI(`*`)
       services:
         - name: pihole-dns-tcp
-          port: 53
+          port: 8853
