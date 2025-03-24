@@ -214,8 +214,8 @@ resources:
   #  cpu: 100m
   #  memory: 128Mi
 
-# -- `spec.PersitentVolumeClaim` configuration
-persistentVolumeClaim:
+
+persistence:
   # -- set to true to use pvc
   enabled: true
   name: pihole
