@@ -221,7 +221,7 @@ pihole:
     # -- set to true to use pvc
     enabled: true
     # -- specify an existing `PersistentVolumeClaim` to use
-    existingClaim: "pihole"
+    #existingClaim: "pihole"
 
     # -- Annotations for the `PersitentVolumeClaim`
     annotations: {}
