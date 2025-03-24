@@ -23,7 +23,7 @@ traefik:
       protocol: TCP
     dns-udp:
       expose: 
-       default: default: true
+       default: true
       port: 53
       protocol: UDP
       exposedPort: 53
