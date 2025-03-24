@@ -214,13 +214,13 @@ resources:
   #  cpu: 100m
   #  memory: 128Mi
 
-
-persistence:
+# -- `spec.PersitentVolumeClaim` configuration
+persistentVolumeClaim:
   # -- set to true to use pvc
   enabled: true
   name: pihole
   # -- specify an existing `PersistentVolumeClaim` to use
-  # existingClaim: ""
+  existingClaim: "pihole"
 
   # -- Annotations for the `PersitentVolumeClaim`
   annotations: {}
@@ -229,7 +229,7 @@ persistence:
     - ReadWriteOnce
 
   # -- volume claim size
-  size: "500Mi"
+  #size: "500Mi"
 
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
@@ -237,7 +237,7 @@ persistence:
   ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
   ##   GKE, AWS & OpenStack)
   ##
-  storageClass: "zfs"
+  #storageClass: "zfs"
 
   ## If subPath is set mount a sub folder of a volume instead of the root of the volume.
   ## This is especially handy for volume plugins that don't natively support sub mounting (like glusterfs).
