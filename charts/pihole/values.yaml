@@ -218,7 +218,6 @@ resources:
 persistentVolumeClaim:
   # -- set to true to use pvc
   enabled: true
-  name: pihole
   # -- specify an existing `PersistentVolumeClaim` to use
   existingClaim: "pihole"
 
