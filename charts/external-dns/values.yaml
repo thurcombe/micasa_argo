@@ -1,13 +1,14 @@
-env:
-- name: EXTERNAL_DNS_PIHOLE_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: pihole-admin
-      key: password
-registry: noop
-sources:
-#- service
-- ingress
-extraArgs:
-- --provider=pihole
-- --pihole-server=http://pihole-web.pihole.svc.cluster.local  
+external-dns:
+  env:
+  - name: EXTERNAL_DNS_PIHOLE_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: pihole-admin
+        key: password
+  registry: noop
+  sources:
+  #- service
+  - ingress
+  extraArgs:
+  - --provider=pihole
+  - --pihole-server=http://pihole-web.pihole.svc.cluster.local  
