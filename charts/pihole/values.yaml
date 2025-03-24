@@ -29,7 +29,7 @@ pihole:
 
   dnsHostPort:
     # -- set this to true to enable dnsHostPort
-    enabled: true
+    enabled: false
     # -- default port for this pod
     port: 53
 
@@ -49,7 +49,6 @@ pihole:
 
     # -- `spec.externalTrafficPolicy` for the DHCP Service
     externalTrafficPolicy: Local
-    internalTrafficPolicy: Cluster
 
     # -- A fixed `spec.loadBalancerIP` for the DNS Service
     loadBalancerIP: ""
