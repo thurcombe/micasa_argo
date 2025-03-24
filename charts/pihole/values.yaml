@@ -39,7 +39,7 @@ pihole:
     mixedService: true
 
     # -- `spec.type` for the DNS Service
-    type: LoadBalancer
+    type: NodePort
 
     # -- The port of the DNS service
     port: 53
