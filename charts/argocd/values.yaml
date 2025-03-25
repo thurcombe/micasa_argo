@@ -1,4 +1,4 @@
-argo-cd: 
+argo-cd:
   crds:
     # -- Install and upgrade CRDs
     install: true
@@ -11,5 +11,6 @@ argo-cd:
   ingress:
     enabled: true
     ingressClassName: traefik
+    tls: true
     annotations:
       cert-manager.io/cluster-issuer: selfsigned
