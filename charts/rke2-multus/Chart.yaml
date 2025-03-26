@@ -1,0 +1,7 @@
+apiVersion: v2
+name: rke2-multus
+version: 1.0.0
+dependencies:
+  - name: rke2-multus
+    version: 4.2.0
+    repository: https://rke2-charts.rancher.io
