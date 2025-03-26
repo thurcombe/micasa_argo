@@ -9,7 +9,6 @@ external-dns:
   provider:
    name: pihole
   sources:
-  #- service
   - ingress
   extraArgs:
-  - --pihole-server=http://pihole-web.pihole.svc.cluster.local  
+  - --pihole-server=http://pihole-web.pihole.svc.cluster.local
