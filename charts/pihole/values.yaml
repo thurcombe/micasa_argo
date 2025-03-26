@@ -1,7 +1,3 @@
 pihole:
   virtualHost: pihole.k3s.micasa.systems
-  dnsHostPort:
-    enabled: true
-    port: 53
-  
   
