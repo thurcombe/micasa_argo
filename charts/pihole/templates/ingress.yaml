@@ -10,7 +10,7 @@ spec:
         - {{ .Values.virtualHost }}
       secretName: pihole-web-certificate
   rules:
-    - host: {{ .Values.dnsName }}
+    - host: {{ .Values.virtualHost }}
       http:
         paths:
           - path: /
