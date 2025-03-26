@@ -4,3 +4,12 @@ metadata:
   name: selfsigned
 spec:
   selfSigned: {}
+  certificate:
+    subject:
+      organization: 
+        - "Micasa Systems"
+      organizationalUnit:
+      - "Home"
+      country:
+      - "UK"
+
