@@ -8,10 +8,17 @@ traefik:
     - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
     - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
     - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+    expose: true
+    port: 80
+    protocol: TCP
+  websecure:
+    expose: true
+    port: 443
+    protocol: TCP
   ports:
     web:
       expose:
-       default: true
+        default: true
       port: 80
       protocol: TCP
     websecure:
@@ -19,6 +26,7 @@ traefik:
         default: true
       port: 443
       protocol: TCP
+    
   ingressRoute:
     dashboard:
       enabled: false
