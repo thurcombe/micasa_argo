@@ -7,10 +7,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - {{ .Values.virtualHost }}
+        - {{ .Values.pihole.virtualHost }}
       secretName: pihole-web-certificate
   rules:
-    - host: {{ .Values.virtualHost }}
+    - host: {{ .Values.pihole.virtualHost }}
       http:
         paths:
           - path: /
