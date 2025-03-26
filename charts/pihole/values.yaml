@@ -2,4 +2,6 @@ pihole:
   virtualHost: pihole.k3s.micasa.systems
   persistentVolumeClaim:
     enabled: true
+    storageclass: zfs
+    size: 500M
   
