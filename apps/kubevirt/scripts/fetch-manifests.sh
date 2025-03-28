@@ -1,5 +1,5 @@
 #!/bin/sh
 
-APP_VERSION=$1
-curl -s -o ../base/kubevirt-operator.yaml "https://github.com/kubevirt/kubevirt/releases/download/${APP_VERSION}/kubevirt-operator.yaml"
-curl -s -o ../base/kubevirt-cr.yaml "https://github.com/kubevirt/kubevirt/releases/download/${APP_VERSION}/kubevirt-operator.yaml"
+export RELEASE=$(curl -s https://storage.googleapis.com/kubevirt-prow/release/kubevirt/kubevirt/stable.txt)
+curl -L -o ../base/kubevirt-operator.yaml "https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml"
+curl -L -o ../base/kubevirt-cr.yaml "https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-cr.yaml"
