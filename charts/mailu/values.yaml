@@ -1,4 +1,8 @@
 mailu:
+  global:
+    storageClass: zfs
   hostnames:
   - mail.k3s.micasa.systems
   domain: micasa.systems
+  ingress:
+    ingressClassName: traefik
