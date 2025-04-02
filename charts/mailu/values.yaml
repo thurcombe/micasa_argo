@@ -4,7 +4,6 @@ mailu:
   hostnames:
   - mail.k3s.micasa.systems
   domain: micasa.systems
-    - mail.mydomain.com
   initialAccount:
     domain: micasa.systems
     username: mailadmin
