@@ -6,3 +6,5 @@ mailu:
   domain: micasa.systems
   ingress:
     ingressClassName: traefik
+    annotations:
+    - cert-manager.io/cluster-issuer: letsencrypt
