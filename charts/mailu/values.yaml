@@ -1,5 +1,4 @@
 mailu:
   hostnames:
   - mail.k3s.micasa.systems
-  domain:micasa.systems
-    
+  domain: micasa.systems
