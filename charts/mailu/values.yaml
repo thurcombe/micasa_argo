@@ -5,6 +5,7 @@ mailu:
   - mail.k3s.micasa.systems
   domain: micasa.systems
   initialAccount:
+    enabled: true
     domain: micasa.systems
     username: mailadmin
   ingress:
