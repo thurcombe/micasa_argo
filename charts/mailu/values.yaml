@@ -7,4 +7,4 @@ mailu:
   ingress:
     ingressClassName: traefik
     annotations:
-    - cert-manager.io/cluster-issuer: letsencrypt
+      cert-manager.io/cluster-issuer: letsencrypt
