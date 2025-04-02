@@ -1,6 +1,5 @@
 mailu:
     hostnames:
-     - mail.k3s.micasa.systems
+    - mail.k3s.micasa.systems
     domain:micasa.systems
-    secretKey: {{ Values.mailu_secret_key }}
     
