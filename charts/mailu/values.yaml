@@ -2,7 +2,9 @@ mailu:
   global:
     storageClass: zfs
   hostnames:
-  - mail.k3s.micasa.systems
+  - micasa.systems
+  - k3s.micasa.systems
+  - mail.micasa.systems
   domain: micasa.systems
   initialAccount:
     enabled: true
