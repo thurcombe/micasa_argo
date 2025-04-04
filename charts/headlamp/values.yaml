@@ -1,0 +1,6 @@
+headlamp:
+  config:
+    inCluster: true
+  persistentVolumeClaim:
+    enabled: true
+    storageClassName: zfs
