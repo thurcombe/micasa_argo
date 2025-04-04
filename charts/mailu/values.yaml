@@ -8,6 +8,7 @@ mailu:
   domain: micasa.systems
   persistence:
     storageClass: zfs
+    single_pvc: false
   fetchmail:
     enabled: true
     logLevel: debug
