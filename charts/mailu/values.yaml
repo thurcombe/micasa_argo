@@ -26,6 +26,9 @@ mailu:
     logLevel: debug
     persistence:
         storageClass: zfs
+  webmail:
+    persistence:
+      storageClass: zfs
   initialAccount:
     enabled: true
     domain: micasa.systems
