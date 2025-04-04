@@ -9,3 +9,4 @@ headlamp:
   persistentVolumeClaim:
     enabled: true
     storageClassName: zfs
+    size: 10Gi
