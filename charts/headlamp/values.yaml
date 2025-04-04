@@ -12,7 +12,7 @@ headlamp:
          - path: /
            type: ImplementationSpecific
     tls:
-      - secretName: healight-certificates
+      - secretName: headlamp-certificates
         hosts:
           - ui.k3s.micasa.systems
   persistentVolumeClaim:
