@@ -5,8 +5,19 @@ headlamp:
     enabled: true
     ingressClassName: traefik
     annotations:
-      cert-manager.io/cluster-issuer: selfsigned 
+      cert-manager.io/cluster-issuer: selfsigned
+    hosts:
+     - host: ui.k3s.micasa.systems
+       paths:
+         - path: /
+           type: ImplementationSpecific
+    tls:
+      - secretName: healight-certificates
+        hosts:
+          - ui.k3s.micasa.systems
   persistentVolumeClaim:
     enabled: true
     storageClassName: zfs
     size: 10Gi
+    accessModes:
+      - ReadWriteOnce
