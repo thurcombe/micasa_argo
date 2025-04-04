@@ -6,6 +6,8 @@ mailu:
   - k3s.micasa.systems
   - mail.micasa.systems
   domain: micasa.systems
+  persistence:
+    storageClass: zfs
   fetchmail:
     enabled: true
     logLevel: debug
