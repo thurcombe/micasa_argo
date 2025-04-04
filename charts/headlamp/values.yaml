@@ -1,6 +1,11 @@
 headlamp:
   config:
     inCluster: true
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      cert-manager.io/cluster-issuer: selfsigned 
   persistentVolumeClaim:
     enabled: true
     storageClassName: zfs
