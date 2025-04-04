@@ -9,9 +9,23 @@ mailu:
   persistence:
     storageClass: zfs
     single_pvc: false
+  dovecot:
+    persistence:
+        storageClass: zfs
+  postfix:
+    persistence:
+        storageClass: zfs
+  admin:
+    persistence:
+      storageClass: zfs
+  rspamd:
+    persistence:
+      storageClass: zfs
   fetchmail:
     enabled: true
     logLevel: debug
+    persistence:
+        storageClass: zfs
   initialAccount:
     enabled: true
     domain: micasa.systems
