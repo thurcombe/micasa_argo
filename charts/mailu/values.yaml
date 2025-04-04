@@ -6,6 +6,9 @@ mailu:
   - k3s.micasa.systems
   - mail.micasa.systems
   domain: micasa.systems
+  fetchmail:
+    enabled: true
+    logLevel: debug
   initialAccount:
     enabled: true
     domain: micasa.systems
