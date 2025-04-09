@@ -8,4 +8,7 @@ pihole:
     enabled: false
   serviceDns:
     type: LoadBalancer
+    annotations:
+      metallb.universe.tf/allow-shared-ip: pihole-svc
+
   
