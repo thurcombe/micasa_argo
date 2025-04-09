@@ -6,7 +6,7 @@ vaultwarden:
         tlsSecret: vaultwarden-certificate
         hostname: vaultwarden.k3s.micasa.systems
     smtp:
-        host: micasa.systems
+        host: 192.168.15.10
         from: no-reply@vaultwarden.k3s.micasa.systems
         fromName: "Vault Administrator"
         acceptInvalidHostnames: "true"
