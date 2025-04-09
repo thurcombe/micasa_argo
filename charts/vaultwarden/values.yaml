@@ -1,0 +1,18 @@
+vaultwarden:
+    domain: https://vaultwarden.k3s.micasa.systems
+    ingress:
+        enabled: true
+        class: traefik
+        tlsSecret: vaultwarden-certificate
+        hostname: vaultwarden.k3s.micasa.systems
+    smtp:
+        host: micasa.systems
+        from: no-reply@vaultwarden.k3s.micasa.systems
+        fromName: "Vault Administrator"
+        acceptInvalidHostnames: "true"
+        acceptInvalidCerts: "true"
+    data:
+        name: "vaultwarden-data"
+        size: "2Gi"
+        class: "zfs"
+        keepPvc: true
