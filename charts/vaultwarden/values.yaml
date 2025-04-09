@@ -16,5 +16,6 @@ vaultwarden:
             name: "vaultwarden-data"
             size: "2Gi"
             class: "zfs"
+            accessMode: ReadWriteOnce
         attachments:
             keepPvc: true
