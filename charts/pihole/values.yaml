@@ -4,6 +4,8 @@ pihole:
     enabled: true
     storageClass: zfs
     size: 500M
+  dnsHostPort:
+    enabled: false
   serviceDns:
     type: LoadBalancer
   
