@@ -18,4 +18,5 @@ vaultwarden:
             class: "zfs"
             accessMode: ReadWriteOnce
         attachments:
+            name: "vaultwarden-data"
             keepPvc: true
