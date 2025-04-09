@@ -11,8 +11,10 @@ vaultwarden:
         fromName: "Vault Administrator"
         acceptInvalidHostnames: "true"
         acceptInvalidCerts: "true"
-    data:
-        name: "vaultwarden-data"
-        size: "2Gi"
-        class: "zfs"
-        keepPvc: true
+    storage:
+        data:
+            name: "vaultwarden-data"
+            size: "2Gi"
+            class: "zfs"
+        attachments:
+            keepPvc: true
