@@ -20,5 +20,3 @@ vaultwarden:
         attachments:
             name: "vaultwarden-data"
             keepPvc: true
-    service:
-        type: LoadBalancer
