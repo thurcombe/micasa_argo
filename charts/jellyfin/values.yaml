@@ -2,10 +2,14 @@ jellyfin:
     ingress:
         enabled: true
         ingressClassName: traefik
+        tls:
+            - hosts:
+                - "kelly.k3s.micasa.systems"
+              secretName: certificate-secret 
         hosts:
          - host: "jelly.k3s.micasa.systems"
-        paths:
-            path: /
+           paths: 
+            - path: /
         annotations:
             cert-manager.io/cluster-issuer: letsencrypt
     persistence:
