@@ -1,5 +1,6 @@
 jellyfin:
     ingress:
+        enabled: true
         ingressClassName: traefik
         hosts:
          - jelly.k3s.micasa.systems
