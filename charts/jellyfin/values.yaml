@@ -1,0 +1,11 @@
+jellyfin:
+    ingress:
+        ingressClassName: traefik
+        annotations:
+            cert-manager.io/cluster-issuer: letsencrypt
+    persistence:
+        config:
+            storageClass: zfs
+        media:
+            storageClass: zfs
+    
