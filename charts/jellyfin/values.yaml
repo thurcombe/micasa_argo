@@ -10,6 +10,7 @@ jellyfin:
          - host: "jelly.k3s.micasa.systems"
            paths: 
             - path: /
+              pathType: ImplementationSpecific
         annotations:
             cert-manager.io/cluster-issuer: letsencrypt
     persistence:
