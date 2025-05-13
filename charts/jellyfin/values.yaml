@@ -4,6 +4,8 @@ jellyfin:
         ingressClassName: traefik
         hosts:
          - host: "jelly.k3s.micasa.systems"
+        paths:
+            path: /
         annotations:
             cert-manager.io/cluster-issuer: letsencrypt
     persistence:
