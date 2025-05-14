@@ -1,11 +1,11 @@
 sonarr:
     persistence:
         media:
-            enabled: true
+            enabled: false
             exitingClaim: jellyfin-media
             accessMode: ReadWriteMany
         config:
-            enabled: true
+            enabled: false
             existingClaim: jellyfin-config
             accessMode: ReadWriteOnce
     
