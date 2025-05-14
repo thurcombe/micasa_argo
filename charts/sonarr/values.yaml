@@ -1,9 +1,10 @@
-common:
-    persistence:
-        media:
-            enabled: true
-            existingClaim: jellyfin-media
 sonarr:
+        common:
+            persistence:
+                media:
+                    enabled: true
+                    existingClaim: jellyfin-media
+
         config:
             enabled: false
             existingClaim: jellyfin-config
