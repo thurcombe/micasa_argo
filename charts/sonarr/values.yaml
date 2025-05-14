@@ -7,10 +7,7 @@ sonarr:
                 - host: sonarr.k3s.micasa.systems
                   paths:
                     - path: /
-                        pathType: ImplementationSpecific
-            tls:
-                - hosts:
-                    - sonarr.k3s.micasa.systems
+                      pathType: ImplementationSpecific
     persistence:
             media:
                 enabled: true
