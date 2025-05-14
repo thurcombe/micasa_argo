@@ -1,6 +1,6 @@
 nfs-subdir-external-provisioner:
     nfs:
         server: k3s.micasa.systems
-        path: /nfs-server
+        path: /data/nfs-server
     storageClass:
         accessMode: ReadWriteMany
