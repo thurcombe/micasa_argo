@@ -3,7 +3,9 @@ sonarr:
         media:
             enabled: true
             exitingClaim: jellyfin-media
+            accessMode: ReadWriteMany
         config:
             enabled: true
             existingClaim: jellyfin-config
+            accessMode: ReadWriteOnce
     
