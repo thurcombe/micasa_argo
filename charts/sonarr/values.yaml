@@ -1,5 +1,9 @@
 sonarr:
     persistence:
-        enabled: true
-        exitingClaim: jellyfin-media
+        media:
+            enabled: true
+            exitingClaim: jellyfin-media
+        config:
+            enabled: true
+            existingClaim: jellyfin-config
     
