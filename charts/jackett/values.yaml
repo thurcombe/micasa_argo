@@ -1,0 +1,15 @@
+jackett:
+    persistence:
+        enabled: true
+        volumes:
+            - name: "config"
+              pvcClaim: jellyfin-config
+            - name: "downloads"
+              storageClassName: nfs-client
+              size: 50G
+    ingress:
+        enabled: true
+        hostName: jackett.k3s.micasa.systems
+        ingressClassName: traefik
+        tls:
+            enabled: true
