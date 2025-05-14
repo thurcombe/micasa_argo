@@ -1,4 +1,7 @@
 sonarr:
+    ingress:
+        enabled: true
+        className: traefik
     persistence:
             media:
                 enabled: true
