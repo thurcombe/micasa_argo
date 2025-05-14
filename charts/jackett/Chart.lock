@@ -1,0 +1,6 @@
+dependencies:
+- name: jackett
+  repository: https://rubxkube.github.io/charts/
+  version: 1.3.1
+digest: sha256:e5a542f25952beeaa2ef6adff5a5cfee2de838b1b7103259d8705ee7a10a655c
+generated: "2025-05-14T19:35:54.347412173+01:00"
