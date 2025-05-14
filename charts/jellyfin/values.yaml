@@ -17,5 +17,5 @@ jellyfin:
         config:
             storageClass: zfs
         media:
-            storageClass: zfs
+            storageClass: nfs-client
     
