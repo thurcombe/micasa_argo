@@ -1,0 +1,5 @@
+sonarr:
+    persistence:
+        enabled: true
+        exitingClaim: jellyfin-media
+    
