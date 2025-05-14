@@ -1,6 +1,5 @@
 sonarr:
     persistence:
-        common:
             media:
                 enabled: true
                 existingClaim: jellyfin-media
