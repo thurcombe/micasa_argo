@@ -3,6 +3,14 @@ sonarr:
         main:
             enabled: true
             className: traefik
+            hosts:
+                host: sonarr.k3s.micasa.systems
+                paths:
+                    path: /
+                    pathType: ImplementationSpecific
+            tls:
+                hosts:
+                    - sonarr.k3s.micasa.systems
     persistence:
             media:
                 enabled: true
