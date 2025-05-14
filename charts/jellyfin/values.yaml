@@ -15,7 +15,7 @@ jellyfin:
             cert-manager.io/cluster-issuer: letsencrypt
     persistence:
         config:
-            storageClass: zfs
+            storageClass: nfs-client
         media:
             storageClass: nfs-client
     

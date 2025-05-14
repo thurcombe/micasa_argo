@@ -8,5 +8,3 @@ sonarr:
         config:
             enabled: false
             existingClaim: jellyfin-config
-            accessMode: ReadWriteOnce
-    
