@@ -1,9 +1,9 @@
-sonarr:
+common:
     persistence:
         media:
-            enabled: false
-            exitingClaim: jellyfin-media
-            accessMode: ReadWriteMany
+            enabled: true
+            existingClaim: jellyfin-media
+sonarr:
         config:
             enabled: false
             existingClaim: jellyfin-config
