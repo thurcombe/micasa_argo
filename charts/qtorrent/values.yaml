@@ -1,0 +1,45 @@
+qtorrent:
+  persistence: 
+    enabled: true
+    volumes:
+      - name: qtorrent-config
+        #existingClaimName: qtorrent-config
+        size: 250M
+        storageClassName: zfs
+        accessMode: ReadWriteOnce
+      - name: qtorrent-dl
+        #existingClaimName: qtorrent-dl
+        size: 50G
+        storageClassName: nfs-client
+        accessMode: ReadWriteMany
+    volumeMounts:
+      - name: qtorrent-config
+        mountPath: /config
+      - name: qtorrent-dl
+        mountPath: /downloads
+
+  vpn:
+    enabled: true
+    credentials: 
+      secretName: vpn-secret
+      # password: ""
+    env:
+      - name: VPN_SERVICE_PROVIDER
+        value: "nordvpn"
+      - name: OPENVPN_USER
+        value: ""
+      - name: SERVER_COUNTRIES
+        value: "UK"
+      - name: OPENVPN_PASSWORD
+        valueFrom:
+          secretKeyRef: vpn-secret
+          key: "password"
+    volumes:
+      - name: gluetun-config
+        size: 250M
+        storageClassName: "zfs"
+        accessMode: ReadWriteOnce
+    volumeMounts: 
+      - name: gluetun-config
+        mountPath: /gluetun
+
