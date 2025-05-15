@@ -22,7 +22,7 @@ qtorrent:
     enabled: true
     credentials: 
       secretName: vpn-secret
-      # password: ""
+      password: ""
     env:
       - name: VPN_SERVICE_PROVIDER
         value: "nordvpn"
