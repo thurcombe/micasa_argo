@@ -17,7 +17,6 @@ qtorrent:
         mountPath: /config
       - name: qtorrent-dl
         mountPath: /downloads
-
   vpn:
     enabled: true
     credentials: 
@@ -32,8 +31,9 @@ qtorrent:
         value: "UK"
       - name: OPENVPN_PASSWORD
         valueFrom:
-          secretKeyRef: vpn-secret
-          key: "password"
+          secretKeyRef: 
+            name: vpn-secret
+            key: "password"
     volumes:
       - name: gluetun-config
         size: 250M
