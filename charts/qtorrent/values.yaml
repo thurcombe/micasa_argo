@@ -1,4 +1,6 @@
 qtorrent:
+  image: 
+    repository: linuxserver/qbittorrent
   persistence: 
     enabled: true
     volumes:
