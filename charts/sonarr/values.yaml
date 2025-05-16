@@ -12,9 +12,11 @@ sonarr:
                 - hosts:
                     - sonarr.k3s.micasa.systems
     persistence:
-            media:
-                enabled: true
-                existingClaim: jellyfin-media
-            config:
-                enabled: false
-                existingClaim: jellyfin-config
+            downloads:
+                existingClaim: qbittorrent-dl
+#            media:
+#                enabled: true
+#                existingClaim: jellyfin-media
+#            config:
+#                enabled: false
+#                existingClaim: jellyfin-config
