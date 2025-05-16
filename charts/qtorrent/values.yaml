@@ -3,15 +3,15 @@ qtorrent:
     repository: linuxserver/qbittorrent
   ingress:
     enabled: true
-    className: "traefik"
+    className: traefik
     hosts:
-      - host: qtorrent.k3s.micasa.systems
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
+        - host: qtorrent.k3s.micasa.systems
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
     tls:
-      hosts:
-        - qtorrent.k3s.micasa.systems
+        - hosts:
+            - qtorrent.k3s.micasa.systems
 
   persistence: 
     enabled: true
