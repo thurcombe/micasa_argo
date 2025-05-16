@@ -21,3 +21,5 @@ sonarr:
                 size: 250M
                 accessMode: "ReadWriteOnce"
                 path: /config2
+    securityContext:
+        fsGroup: 0
