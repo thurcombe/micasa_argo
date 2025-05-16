@@ -22,4 +22,4 @@ sonarr:
                 accessMode: "ReadWriteOnce"
                 path: /config2
     securityContext:
-        fsGroup: 0
+        fsGroup: 65534
