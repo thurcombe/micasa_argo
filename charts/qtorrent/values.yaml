@@ -29,7 +29,7 @@ qtorrent:
       - name: VPN_SERVICE_PROVIDER
         value: "nordvpn"
       - name: SERVER_COUNTRIES
-        value: "UK"
+        value: "United Kingdom"
     volumes:
       - name: gluetun-config
         size: 250M
