@@ -15,9 +15,6 @@ sonarr:
             downloads:
                 enabled: true
                 existingClaim: qbittorrent-dl
-#            media:
-#                enabled: true
-#                existingClaim: jellyfin-media
             config:
                 enabled: true
                 storageClass: "zfs"
