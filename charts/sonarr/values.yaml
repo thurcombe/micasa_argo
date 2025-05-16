@@ -12,6 +12,7 @@ sonarr:
                 - hosts:
                     - sonarr.k3s.micasa.systems
     persistence:
+            enabled: true
             downloads:
                 existingClaim: qbittorrent-dl
 #            media:
