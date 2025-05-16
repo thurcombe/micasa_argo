@@ -5,31 +5,31 @@ qtorrent:
     enabled: true
     className: traefik
     hosts:
-        - host: qtorrent.k3s.micasa.systems
+        - host: qbittorrent.k3s.micasa.systems
           paths:
             - path: /
               pathType: ImplementationSpecific
     tls:
         - hosts:
-            - qtorrent.k3s.micasa.systems
+            - qbittorrent.k3s.micasa.systems
 
   persistence: 
     enabled: true
     volumes:
-      - name: qtorrent-config
+      - name: qbittorrent-config
         #existingClaimName: qtorrent-config
         size: 250M
         storageClassName: zfs
         accessMode: ReadWriteOnce
-      - name: qtorrent-dl
+      - name: qbittorrent-dl
         #existingClaimName: qtorrent-dl
-        size: 50G
+        size: 100G
         storageClassName: nfs-client
         accessMode: ReadWriteMany
     volumeMounts:
-      - name: qtorrent-config
+      - name: qbittorrent-config
         mountPath: /config
-      - name: qtorrent-dl
+      - name: qbittorrent-dl
         mountPath: /downloads
   vpn:
     enabled: true

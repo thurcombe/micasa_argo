@@ -1,7 +1,7 @@
 apiVersion: v2
-name: qtorrent
+name: qbittorrent
 version: 1.0.0
 dependencies:
-  - name: qtorrent
-    version: 0.1.5
+  - name: qbittorrent
+    version: 0.1.1
     repository: https://thurcombe.github.io/nullpacket-charts/
