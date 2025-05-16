@@ -1,4 +1,4 @@
-qtorrent:
+qbittorrent:
   image: 
     repository: linuxserver/qbittorrent
   ingress:
