@@ -24,18 +24,12 @@ qtorrent:
     credentials: 
       secretName: vpn-secret
       password: "REDACTED"
+      username: "REDACTED"
     env:
       - name: VPN_SERVICE_PROVIDER
         value: "nordvpn"
-      - name: OPENVPN_USER
-        value: "REDACTED"
       - name: SERVER_COUNTRIES
         value: "UK"
-      - name: OPENVPN_PASSWORD
-        valueFrom:
-          secretKeyRef: 
-            name: vpn-secret
-            key: "password"
     volumes:
       - name: gluetun-config
         size: 250M
