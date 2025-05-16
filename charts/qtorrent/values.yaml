@@ -23,12 +23,12 @@ qtorrent:
     enabled: true
     credentials: 
       secretName: vpn-secret
-      password: ""
+      password: "REDACTED"
     env:
       - name: VPN_SERVICE_PROVIDER
         value: "nordvpn"
       - name: OPENVPN_USER
-        value: ""
+        value: "REDACTED"
       - name: SERVER_COUNTRIES
         value: "UK"
       - name: OPENVPN_PASSWORD
