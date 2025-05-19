@@ -5,6 +5,11 @@ external-dns:
       secretKeyRef:
         name: pihole-admin
         key: password
+  - name: CF_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: cloudflare-api-token
+        key: api-token
   registry: noop
   provider:
    name: pihole
