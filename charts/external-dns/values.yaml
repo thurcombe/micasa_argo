@@ -12,7 +12,7 @@ external-dns:
         key: api-token
   registry: noop
   provider:
-   name: pihole
+   name: cloudflare
   sources:
   - ingress
   extraArgs:
