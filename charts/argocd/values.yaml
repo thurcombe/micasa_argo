@@ -1,11 +1,13 @@
 argo-cd:
-  config:
-    repositories:
-      - url: "https://gitlab.com/n3wz/deployment.git"
-        token: ""
-        ssh: false
-    git:
-      token: ""
+  extraConfigMaps:
+    - name: argocd-cm
+      data:
+        repositories: |
+          - url: "https://gitlab.com/n3wz/deployment.git"
+            token: ""
+            ssh: false
+        git:
+          token: ""
   dex:
     enabled: false
   crds:
