@@ -15,11 +15,9 @@ sonarr:
             downloads:
                 enabled: true
                 existingClaim: qbittorrent-dl
-            sonarr-config:
+            config:
                 enabled: true
                 storageClass: "zfs"
                 size: 250M
                 accessMode: "ReadWriteOnce"
-                path: /config2
-    securityContext:
-        fsGroup: 65534
+                path: /config
