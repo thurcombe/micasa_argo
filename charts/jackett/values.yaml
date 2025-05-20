@@ -11,8 +11,13 @@ jackett:
             mountPath: /config
     ingress:
         enabled: true
-        hostName: jackett.k3s.micasa.systems
-        className: traefik
+        ingressClassName: traefik
         tls:
-            enabled: true
+            - hosts:
+                - "jackett.k3s.micasa.systems"
+        hosts:
+         - host: "jackett.k3s.micasa.systems"
+           paths: 
+            - path: /
+              pathType: ImplementationSpecific
 
