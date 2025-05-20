@@ -13,7 +13,9 @@ jellyfin:
            paths: 
             - path: /
               pathType: ImplementationSpecific
-
+    env:
+        - name: JELLYFIN_DATA_DIR
+          value: "/data/videos"
     persistence:
         enabled: true
         volumes:
