@@ -8,36 +8,38 @@ sonarr:
       path: /
       port: http
 
-    service:
-      type: ClusterIP
-      port: 8989
-    env:
-      - name: PUID
-        value: "5000"
-      - name: PGID
-        value: "5000"
-      - name: TZ
-        value: "Europe/London"
-    ingress:
-        main:
-            enabled: true
-            className: traefik
-            hosts:
-                - host: sonarr.k3s.micasa.systems
-                  paths:
-                    - path: /
-                      pathType: ImplementationSpecific
-            tls:
-                - hosts:
-                    - sonarr.k3s.micasa.systems
-    persistence:
-      enabled: true
-      volumes:
-        - name: qbittorrent-dl
-          existingClaimName: qbittorrent-dl
-          path: /download
-        - name: sonarr-config
-          storageClass: "zfs"
-          size: 250M
-          accessMode: "ReadWriteOnce"
-          path: /config
+  service:
+    type: ClusterIP
+    port: 8989
+
+  env:
+    - name: PUID
+      value: "5000"
+    - name: PGID
+      value: "5000"
+    - name: TZ
+      value: "Europe/London"
+      
+  ingress:
+      main:
+          enabled: true
+          className: traefik
+          hosts:
+              - host: sonarr.k3s.micasa.systems
+                paths:
+                  - path: /
+                    pathType: ImplementationSpecific
+          tls:
+              - hosts:
+                  - sonarr.k3s.micasa.systems
+  persistence:
+    enabled: true
+    volumes:
+      - name: qbittorrent-dl
+        existingClaimName: qbittorrent-dl
+        path: /download
+      - name: sonarr-config
+        storageClass: "zfs"
+        size: 250M
+        accessMode: "ReadWriteOnce"
+        path: /config
