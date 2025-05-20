@@ -39,8 +39,12 @@ sonarr:
         path: /download
       - name: sonarr-config
         existingClaimName: sonarr-config
+      - name: jellyfin-videos
+        existingClaimName: jellyfin-videos
     volumeMounts:
       - name: qbittorrent-dl
         mountPath: /downloads
       - name: sonarr-config
         mountPath: /config
+      - name: jellyfin-videos
+        mountPath: /tv
