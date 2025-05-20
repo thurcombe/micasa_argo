@@ -41,4 +41,8 @@ sonarr:
         storageClass: "zfs"
         size: 250M
         accessMode: "ReadWriteOnce"
-        path: /config
+    volumeMounts:
+      - name: qbittorrent-dl
+        mountPath: /downloads
+      - name: sonarr-config
+        mountPath: /config
