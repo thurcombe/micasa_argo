@@ -1,6 +1,6 @@
 dependencies:
 - name: jackett
   repository: https://thurcombe.github.io/nullpacket-charts/
-  version: 0.1.1
-digest: sha256:6900d56674d5c8b1415abae46e86ff5368663cbc1233393f8ecda7d67eb49004
-generated: "2025-05-20T14:20:11.570103984+01:00"
+  version: 0.1.2
+digest: sha256:1d29db955f32a10dd2d3a5bdfb2e402ca5a14b3d92ea9a20a1f09804fe0b840a
+generated: "2025-05-20T15:38:43.287703236+01:00"
