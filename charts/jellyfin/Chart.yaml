@@ -3,6 +3,6 @@ name: jellyfin
 version: 1.0.0
 dependencies:
   - name: jellyfin
-    version: 2.3.0
-    repository: https://jellyfin.github.io/jellyfin-helm
+    version: 0.1.0
+    repository: https://thurcombe.github.io/nullpacket-charts/
 

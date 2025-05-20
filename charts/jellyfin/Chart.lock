@@ -1,6 +1,6 @@
 dependencies:
 - name: jellyfin
-  repository: https://jellyfin.github.io/jellyfin-helm
-  version: 2.3.0
-digest: sha256:9da448d60ae351377b1d122bae266b91d1a614a51b8b64ec22f54513870f73bc
-generated: "2025-05-13T13:32:24.575883983+01:00"
+  repository: https://thurcombe.github.io/nullpacket-charts/
+  version: 0.1.0
+digest: sha256:ae6ea31cd9a7e0e98bf6c1ebb7369be120f1e39d9b6e471c84903fe953dcb4c8
+generated: "2025-05-20T12:20:08.268568639+01:00"

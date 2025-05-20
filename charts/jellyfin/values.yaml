@@ -1,19 +1,32 @@
 jellyfin:
+    service:
+        type: ClusterIP
+        port: 8096
     ingress:
         enabled: true
         ingressClassName: traefik
         tls:
             - hosts:
                 - "jelly.k3s.micasa.systems"
-              secretName: certificate-secret 
         hosts:
          - host: "jelly.k3s.micasa.systems"
            paths: 
             - path: /
               pathType: ImplementationSpecific
+
     persistence:
-        config:
-            storageClass: nfs-client
-        media:
-            storageClass: nfs-client
-    
+        enabled: true
+        volumes:
+          - name: jellyfin-videos
+            storageClassName: "nfs-client"
+            accessMode: "ReadWriteMany"
+            size: 200G
+          - name: jellyfin-config
+            storageClassName: "zfs"
+            accessMode: "ReadWriteOnce"
+            size: 250M
+        volumeMounts:
+          - name: jellyfin-videos
+            mountPath: /data/videos
+          - name: jellyfin-config
+            mountPath: /config
