@@ -1,23 +1,31 @@
 jackett:
-    persistence:
-        enabled: true
-        volumes:
-            - name: "jackett-config"
-              storageClassName: "zfs"
-              size: 250M
-              accessMode: "ReadWriteOnce"
-        volumeMounts:
-          - name: jackett-config
-            mountPath: /config
-    ingress:
-        enabled: true
-        ingressClassName: traefik
-        tls:
-            - hosts:
-                - "jackett.k3s.micasa.systems"
-        hosts:
-         - host: "jackett.k3s.micasa.systems"
-           paths: 
-            - path: /
-              pathType: ImplementationSpecific
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+  persistence:
+      enabled: true
+      volumes:
+          - name: "jackett-config"
+            storageClassName: "zfs"
+            size: 250M
+            accessMode: "ReadWriteOnce"
+      volumeMounts:
+        - name: jackett-config
+          mountPath: /config
+  ingress:
+      enabled: true
+      ingressClassName: traefik
+      tls:
+          - hosts:
+              - "jackett.k3s.micasa.systems"
+      hosts:
+       - host: "jackett.k3s.micasa.systems"
+         paths: 
+          - path: /
+            pathType: ImplementationSpecific
 
