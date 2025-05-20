@@ -2,11 +2,13 @@ jackett:
     persistence:
         enabled: true
         volumes:
-            - name: "config"
-              pvcClaim: jellyfin-config
-            - name: "downloads"
-              storageClassName: nfs-client
-              size: 50G
+            - name: "jackett-config"
+              storageClassName: "zfs"
+              size: 250M
+              accessMode: "ReadWriteOnce"
+        volumeMounts:
+          - name: jackett-config
+            mountPath: /config
     ingress:
         enabled: true
         hostName: jackett.k3s.micasa.systems
