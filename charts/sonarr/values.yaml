@@ -38,9 +38,7 @@ sonarr:
         existingClaimName: qbittorrent-dl
         path: /download
       - name: sonarr-config
-        storageClass: "zfs"
-        size: 250M
-        accessMode: "ReadWriteOnce"
+        existingClaimName: sonarr-config
     volumeMounts:
       - name: qbittorrent-dl
         mountPath: /downloads
