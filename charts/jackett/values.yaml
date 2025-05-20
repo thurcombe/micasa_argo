@@ -12,6 +12,7 @@ jackett:
     ingress:
         enabled: true
         hostName: jackett.k3s.micasa.systems
-        ingressClassName: traefik
+        className: traefik
         tls:
             enabled: true
+
