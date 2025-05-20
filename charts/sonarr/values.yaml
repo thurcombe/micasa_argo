@@ -1,4 +1,16 @@
 sonarr:
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+
+    service:
+      type: ClusterIP
+      port: 8989
     env:
       - name: PUID
         value: "5000"
