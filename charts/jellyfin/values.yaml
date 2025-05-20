@@ -26,7 +26,7 @@ jellyfin:
           - name: jellyfin-config
             storageClassName: "zfs"
             accessMode: "ReadWriteOnce"
-            size: 250M
+            size: 1G
         volumeMounts:
           - name: jellyfin-videos
             mountPath: /data/videos
