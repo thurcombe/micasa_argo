@@ -7,6 +7,9 @@ jackett:
     httpGet:
       path: /
       port: http
+  service:
+    type: ClusterIP
+    port: 8989
   persistence:
       enabled: true
       volumes:
