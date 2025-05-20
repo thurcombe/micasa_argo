@@ -1,4 +1,9 @@
 qbittorrent:
+  env:
+    - name: PUID
+      value: "5000"
+    - name: PGID
+      value: "5000"
   image: 
     repository: linuxserver/qbittorrent
   ingress:
@@ -38,6 +43,8 @@ qbittorrent:
       password: "REDACTED"
       username: "REDACTED"
     env:
+      - name: DNS_ADDRESS
+        value: "1.1.1.1"
       - name: VPN_SERVICE_PROVIDER
         value: "nordvpn"
       - name: SERVER_COUNTRIES
