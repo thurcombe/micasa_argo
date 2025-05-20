@@ -16,6 +16,10 @@ jellyfin:
     env:
         - name: JELLYFIN_DATA_DIR
           value: "/data/videos"
+        - name: PUID
+          value: "65533"
+        - name: PGID
+          value: "65533"
     persistence:
         enabled: true
         volumes:
