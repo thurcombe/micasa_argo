@@ -14,9 +14,9 @@ sonarr:
 
   env:
     - name: PUID
-      value: "5000"
+      value: "65533"
     - name: PGID
-      value: "5000"
+      value: "65533"
     - name: TZ
       value: "Europe/London"
 
