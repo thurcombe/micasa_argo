@@ -40,7 +40,7 @@ sonarr:
       - name: sonarr-config
         #existingClaimName: sonarr-config
         size: 250M
-        accessMode: "ReadWriteMany"
+        accessMode: "ReadWriteOnce"
       - name: jellyfin-videos
         existingClaimName: jellyfin-videos
     volumeMounts:
