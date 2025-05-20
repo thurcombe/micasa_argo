@@ -1,4 +1,11 @@
 sonarr:
+    env:
+      - name: PUID
+        value: "5000"
+      - name: PGID
+        value: "5000"
+      - name: TZ
+        value: "Europe/London"
     ingress:
         main:
             enabled: true
@@ -12,12 +19,13 @@ sonarr:
                 - hosts:
                     - sonarr.k3s.micasa.systems
     persistence:
-            downloads:
-                enabled: true
-                existingClaim: qbittorrent-dl
-            config:
-                enabled: true
-                storageClass: "zfs"
-                size: 250M
-                accessMode: "ReadWriteOnce"
-                path: /config
+      enabled: true
+      volumes:
+        - name: qbittorrent-dl
+          existingClaimName: qbittorrent-dl
+          path: /download
+        - name: sonarr-config
+          storageClass: "zfs"
+          size: 250M
+          accessMode: "ReadWriteOnce"
+          path: /config
