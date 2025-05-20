@@ -9,7 +9,7 @@ jackett:
       port: http
   service:
     type: ClusterIP
-    port: 8989
+    port: 9117
   persistence:
       enabled: true
       volumes:
