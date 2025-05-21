@@ -1,6 +1,6 @@
 dependencies:
 - name: prowlarr
   repository: https://thurcombe.github.io/nullpacket-charts/
-  version: 0.1.0
-digest: sha256:3ba49eb76fce8e01f4e7531ab1dcdc0f99a7877a9e7f7106314b4bbc11224c37
-generated: "2025-05-21T16:26:52.690616875+01:00"
+  version: 0.1.1
+digest: sha256:57fe6ae3b1c4a18456c741dd78167a49209a1056a3080407fcadffb41c56d3fa
+generated: "2025-05-21T16:34:47.065376618+01:00"
