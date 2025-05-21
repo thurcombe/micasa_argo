@@ -37,4 +37,4 @@ jellyfin:
           - name: jellyfin-videos
             mountPath: /data/videos
           - name: jellyfin-config
-            mountPat  h: /config
+            mountPath: /config
