@@ -29,7 +29,7 @@ qbittorrent:
       - name: qbittorrent-dl
         #existingClaimName: qtorrent-dl
         size: 100G
-        storageClassName: nfs-client
+        storageClassName: local-path
         accessMode: ReadWriteMany
     volumeMounts:
       - name: qbittorrent-config
