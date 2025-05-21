@@ -1,9 +1,9 @@
 jackett:
-   livenessProbe: null
+  livenessProbe: {}
 #    httpGet:
 #      path: /
 #      port: http
-   readinessProbe: null
+  readinessProbe: {}
 #    httpGet:
 #      path: /
 #      port: http
