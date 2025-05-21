@@ -1,4 +1,4 @@
-jackett:
+prowlarr:
   livenessProbe: {}
 #    httpGet:
 #      path: /
@@ -9,25 +9,25 @@ jackett:
 #      port: http
   service:
     type: ClusterIP
-    port: 9117
+    port: 9696
   persistence:
       enabled: true
       volumes:
-          - name: "jackett-config"
+          - name: "prowlarr-config"
             storageClassName: "zfs"
-            size: 250M
+            size: 1G
             accessMode: "ReadWriteOnce"
       volumeMounts:
-        - name: jackett-config
+        - name: prowlarr-config
           mountPath: /config
   ingress:
       enabled: true
       ingressClassName: traefik
       tls:
           - hosts:
-              - "jackett.k3s.micasa.systems"
+              - "prowlarr.k3s.micasa.systems"
       hosts:
-       - host: "jackett.k3s.micasa.systems"
+       - host: "prowlarr.k3s.micasa.systems"
          paths: 
           - path: /
             pathType: ImplementationSpecific
