@@ -1,12 +1,12 @@
 jackett:
-  livenessProbe:
-    httpGet:
-      path: /
-      port: http
-  readinessProbe:
-    httpGet:
-      path: /
-      port: http
+#  livenessProbe:
+#    httpGet:
+#      path: /
+#      port: http
+#  readinessProbe:
+#    httpGet:
+#      path: /
+#      port: http
   service:
     type: ClusterIP
     port: 9117
