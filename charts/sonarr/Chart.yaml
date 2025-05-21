@@ -3,5 +3,5 @@ name: sonarr
 version: 1.0.0
 dependencies:
   - name: sonarr
-    version: 0.1.3
+    version: 0.1.4
     repository: https://thurcombe.github.io/nullpacket-charts/
