@@ -30,7 +30,7 @@ qbittorrent:
         #existingClaimName: qtorrent-dl
         size: 100G
         storageClassName: local-path
-        accessMode: ReadWriteMany
+        accessMode: ReadWriteOnce
     volumeMounts:
       - name: qbittorrent-config
         mountPath: /config
