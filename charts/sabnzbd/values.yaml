@@ -1,0 +1,58 @@
+sabnzbd:
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  env:
+    - name: PUID
+      value: "65533"
+    - name: PGID
+      value: "65533"
+    - name: TZ
+      value: "Europe/London"
+
+  ingress:
+    enabled: true
+    className: traefik
+    hosts:
+      - host: sabnzbd.k3s.micasa.systems
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+      - hosts:
+        - sabnzbd.k3s.micasa.systems
+  persistence:
+    enabled: true
+    volumes:
+      - name: sabnzbd-dl
+        #existingClaimName: sabnzbd-dl
+        size: 100G
+        accessMode: "ReadWriteMany"
+        storageClassName: local-path
+      - name: sabnzbd-dl-incomplete
+        #existingClaimName: sabnzbd-dl-incomplete
+        size: 100G
+        accessMode: "ReadWriteMany"
+        storageClassName: local-path
+      - name: sabnzbd-config
+        #existingClaimName: saabnzbd-config
+        size: 250M
+        accessMode: "ReadWriteOnce"
+        storageClassName: "zfs"
+    volumeMounts:
+      - name: sabnzbd-dl
+        mountPath: /downloads
+      - name: sabnzbd-dl-incomplete
+        mountPath: /incomplete-downloads
+      - name: sabnzbd-config
+        mountPath: /config
