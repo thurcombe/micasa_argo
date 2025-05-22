@@ -36,9 +36,6 @@ sabnzbd:
     volumes:
       - name: sabnzbd-dl
         existingClaimName: qbittorrent-dl
-        #size: 100G
-        #accessMode: "ReadWriteOnce"
-        #storageClassName: local-path
       - name: sabnzbd-dl-incomplete
         #existingClaimName: sabnzbd-dl-incomplete
         size: 100G
