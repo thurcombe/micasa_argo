@@ -30,7 +30,7 @@ sonarr:
             pathType: ImplementationSpecific
     tls:
       - hosts:
-        - qbittorrent.k3s.micasa.systems
+        - sonarr.k3s.micasa.systems
   persistence:
     enabled: true
     volumes:
