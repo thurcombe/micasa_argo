@@ -37,12 +37,12 @@ sabnzbd:
       - name: sabnzbd-dl
         #existingClaimName: sabnzbd-dl
         size: 100G
-        accessMode: "ReadWriteMany"
+        accessMode: "ReadWriteOnce"
         storageClassName: local-path
       - name: sabnzbd-dl-incomplete
         #existingClaimName: sabnzbd-dl-incomplete
         size: 100G
-        accessMode: "ReadWriteMany"
+        accessMode: "ReadWriteOnce"
         storageClassName: local-path
       - name: sabnzbd-config
         #existingClaimName: saabnzbd-config
