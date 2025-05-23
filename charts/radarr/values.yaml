@@ -1,0 +1,54 @@
+radarr:
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+
+  service:
+    type: ClusterIP
+    port: 8 989
+
+  env:
+    - name: PUID
+      value: "65533"
+    - name: PGID
+      value: "65533"
+    - name: TZ
+      value: "Europe/London"
+
+  ingress:
+    enabled: true
+    className: traefik
+    hosts:
+      - host: radarr.k3s.micasa.systems
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+      - hosts:
+        - radarr.k3s.micasa.systems
+  persistence:
+    enabled: true
+    volumes:
+      - name: qbittorrent-dl
+        existingClaimName: qbittorrent-dl
+      - name: radarr-config
+        #existingClaimName: sonarr-config
+        size: 250M
+        storageClassName: zfs
+        accessMode: "ReadWriteOnce"
+      - name: movies
+        size: 100G
+        storageClassName: local-path
+
+    volumeMounts:
+      - name: qbittorrent-dl
+        mountPath: /downloads
+      - name: sonarr-config
+        mountPath: /config
+      - name: movies
+        mountPath: /tv
