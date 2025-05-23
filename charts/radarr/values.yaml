@@ -44,7 +44,7 @@ radarr:
       - name: movies
         size: 100G
         storageClassName: local-path
-
+        accessMode: "ReadWriteOnce"
     volumeMounts:
       - name: qbittorrent-dl
         mountPath: /downloads
