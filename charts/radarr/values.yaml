@@ -10,7 +10,7 @@ radarr:
 
   service:
     type: ClusterIP
-    port: 8 989
+    port: 7878
 
   env:
     - name: PUID
