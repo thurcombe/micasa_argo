@@ -1,12 +1,12 @@
 radarr:
-  livenessProbe:
-    httpGet:
-      path: /
-      port: http
-  readinessProbe:
-    httpGet:
-      path: /
-      port: http
+  livenessProbe: {}
+#    httpGet:
+#      path: /
+#      port: http
+  readinessProbe: {}
+#    httpGet:
+#      path: /
+#      port: http
 
   service:
     type: ClusterIP
@@ -37,7 +37,7 @@ radarr:
       - name: qbittorrent-dl
         existingClaimName: qbittorrent-dl
       - name: radarr-config
-        #existingClaimName: sonarr-config
+        #existingClaimName: radarr-config
         size: 250M
         storageClassName: zfs
         accessMode: "ReadWriteOnce"
@@ -48,7 +48,7 @@ radarr:
     volumeMounts:
       - name: qbittorrent-dl
         mountPath: /downloads
-      - name: sonarr-config
+      - name: radarr-config
         mountPath: /config
       - name: movies
         mountPath: /tv
