@@ -51,4 +51,4 @@ radarr:
       - name: radarr-config
         mountPath: /config
       - name: movies
-        mountPath: /tv
+        mountPath: /movies
