@@ -35,6 +35,8 @@ jellyfin:
             size: 1G
           - name: movies
             existingClaimName: movies
+          - name: media
+            existingClaimName: media
         volumeMounts:
           - name: jellyfin-videos
             mountPath: /data/videos
@@ -42,3 +44,5 @@ jellyfin:
             mountPath: /config
           - name: movies
             mountPath: /data/movies
+          - name: media
+            mountPath: /media
