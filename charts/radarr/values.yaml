@@ -34,8 +34,8 @@ radarr:
   persistence:
     enabled: true
     volumes:
-      - name: qbittorrent-dl
-        existingClaimName: qbittorrent-dl
+      #- name: qbittorrent-dl
+      #  existingClaimName: qbittorrent-dl
       - name: radarr-config
         #existingClaimName: radarr-config
         size: 250M
@@ -45,9 +45,11 @@ radarr:
         size: 100G
         storageClassName: local-path
         accessMode: "ReadWriteOnce"
+      - name: media
+        existingClaimName: media
     volumeMounts:
-      - name: qbittorrent-dl
-        mountPath: /downloads
+      - name: media
+        mountPath: /media
       - name: radarr-config
         mountPath: /config
       - name: movies
