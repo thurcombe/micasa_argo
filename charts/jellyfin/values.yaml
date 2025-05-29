@@ -25,24 +25,14 @@ jellyfin:
     persistence:
         enabled: true
         volumes:
-          - name: jellyfin-videos
-            storageClassName: "local-path"
-            accessMode: "ReadWriteOnce"
-            size: 200G
           - name: jellyfin-config
             storageClassName: "zfs"
             accessMode: "ReadWriteOnce"
             size: 1G
-          - name: movies
-            existingClaimName: movies
           - name: media
             existingClaimName: media
         volumeMounts:
-          - name: jellyfin-videos
-            mountPath: /data/videos
           - name: jellyfin-config
             mountPath: /config
-          - name: movies
-            mountPath: /data/movies
           - name: media
             mountPath: /media

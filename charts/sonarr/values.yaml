@@ -36,22 +36,22 @@ sonarr:
     volumes:
       - name: media
         existingClaimName: media
-      - name: qbittorrent-dl
-        existingClaimName: qbittorrent-dl
-        path: /download
+      #- name: qbittorrent-dl
+      #  existingClaimName: qbittorrent-dl
+      #  path: /download
       - name: sonarr-config
         #existingClaimName: sonarr-config
         size: 250M
         storageClassName: local-path
         accessMode: "ReadWriteOnce"
-      - name: jellyfin-videos
-        existingClaimName: jellyfin-videos
+      #- name: jellyfin-videos
+      #  existingClaimName: jellyfin-videos
     volumeMounts:
       - name: media
         mountPath: /media
-      - name: qbittorrent-dl
-        mountPath: /downloads
+      #- name: qbittorrent-dl
+      #  mountPath: /downloads
       - name: sonarr-config
         mountPath: /config
-      - name: jellyfin-videos
-        mountPath: /tv
+      #- name: jellyfin-videos
+      #  mountPath: /tv

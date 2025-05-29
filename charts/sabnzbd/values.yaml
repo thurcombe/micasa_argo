@@ -36,13 +36,6 @@ sabnzbd:
     volumes:
       - name: media
         existingClaimName: media
-      - name: sabnzbd-dl
-        existingClaimName: qbittorrent-dl
-      - name: sabnzbd-dl-incomplete
-        #existingClaimName: sabnzbd-dl-incomplete
-        size: 100G
-        accessMode: "ReadWriteOnce"
-        storageClassName: local-path
       - name: sabnzbd-config
         #existingClaimName: saabnzbd-config
         size: 250M
@@ -51,9 +44,5 @@ sabnzbd:
     volumeMounts:
       - name: media
         mountPath: /media
-      - name: sabnzbd-dl
-        mountPath: /downloads
-      - name: sabnzbd-dl-incomplete
-        mountPath: /incomplete-downloads
       - name: sabnzbd-config
         mountPath: /config

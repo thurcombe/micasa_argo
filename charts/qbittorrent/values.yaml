@@ -30,16 +30,16 @@ qbittorrent:
         size: 200G
         storageClassName: local-path
         accessMode: ReadWriteOnce
-      - name: qbittorrent-dl
-        #existingClaimName: qtorrent-dl
-        size: 100G
-        storageClassName: local-path
-        accessMode: ReadWriteOnce
+      #- name: qbittorrent-dl
+      #  #existingClaimName: qtorrent-dl
+      #  size: 100G
+      #  storageClassName: local-path
+      #  accessMode: ReadWriteOnce
     volumeMounts:
       - name: qbittorrent-config
         mountPath: /config
-      - name: qbittorrent-dl
-        mountPath: /downloads
+      #- name: qbittorrent-dl
+      #  mountPath: /downloads
       - name: media
         mountPath: /media
   vpn:
