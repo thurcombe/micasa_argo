@@ -34,6 +34,8 @@ sonarr:
   persistence:
     enabled: true
     volumes:
+      - name: media
+        existingClaimName: media
       - name: qbittorrent-dl
         existingClaimName: qbittorrent-dl
         path: /download
@@ -44,6 +46,8 @@ sonarr:
       - name: jellyfin-videos
         existingClaimName: jellyfin-videos
     volumeMounts:
+      - name: media
+        mountPath: /media
       - name: qbittorrent-dl
         mountPath: /downloads
       - name: sonarr-config
