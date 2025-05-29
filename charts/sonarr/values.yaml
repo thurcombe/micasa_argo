@@ -42,6 +42,7 @@ sonarr:
       - name: sonarr-config
         #existingClaimName: sonarr-config
         size: 250M
+        storageClassName: local-path
         accessMode: "ReadWriteOnce"
       - name: jellyfin-videos
         existingClaimName: jellyfin-videos
