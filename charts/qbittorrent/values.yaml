@@ -26,6 +26,10 @@ qbittorrent:
         size: 250M
         storageClassName: zfs
         accessMode: ReadWriteOnce
+      - name: media
+        size: 200G
+        storageClassName: local-path
+        accessMode: ReadWriteOnce
       - name: qbittorrent-dl
         #existingClaimName: qtorrent-dl
         size: 100G
@@ -36,6 +40,8 @@ qbittorrent:
         mountPath: /config
       - name: qbittorrent-dl
         mountPath: /downloads
+      - name: media
+        mountPath: /media
   vpn:
     enabled: true
     credentials: 
