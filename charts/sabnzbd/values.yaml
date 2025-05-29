@@ -34,6 +34,8 @@ sabnzbd:
   persistence:
     enabled: true
     volumes:
+      - name: media
+        existingClaimName: media
       - name: sabnzbd-dl
         existingClaimName: qbittorrent-dl
       - name: sabnzbd-dl-incomplete
@@ -47,6 +49,8 @@ sabnzbd:
         accessMode: "ReadWriteOnce"
         storageClassName: "zfs"
     volumeMounts:
+      - name: media
+        mountPath: /media
       - name: sabnzbd-dl
         mountPath: /downloads
       - name: sabnzbd-dl-incomplete
