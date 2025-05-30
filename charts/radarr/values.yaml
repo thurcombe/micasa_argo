@@ -38,8 +38,7 @@ radarr:
         #existingClaimName: radarr-config
         size: 250M
         storageClassName: zfs
-        accessMode: "ReadWriteOnce"
-        accessMode: "ReadWriteOnce"
+        accessMode: "ReadWriteOnce" 
       - name: media
         existingClaimName: media
     volumeMounts:
