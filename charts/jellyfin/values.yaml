@@ -17,7 +17,7 @@ jellyfin:
               pathType: ImplementationSpecific
     env:
         - name: JELLYFIN_DATA_DIR
-          value: "/data/videos"
+          value: "/media/jellyfin"
         - name: PUID
           value: "65533"
         - name: PGID
