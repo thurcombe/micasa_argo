@@ -13,10 +13,10 @@ prowlarr:
   persistence:
       enabled: true
       volumes:
-          - name: "prowlarr-config"
-            storageClassName: "zfs"
-            size: 1G
-            accessMode: "ReadWriteOnce"
+        - name: prowlarr-config
+          storageClassName: "zfs"
+          size: 1G
+          accessMode: "ReadWriteOnce"
       volumeMounts:
         - name: prowlarr-config
           mountPath: /config
