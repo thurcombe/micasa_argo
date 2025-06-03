@@ -24,5 +24,4 @@ argo-cd:
       enabled: true
       ingressClassName: traefik
       tls: true
-      annotations:
-        cert-manager.io/cluster-issuer: selfsigned
+        
