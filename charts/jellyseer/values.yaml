@@ -1,0 +1,30 @@
+jellyseer:
+    service:
+        type: ClusterIP
+        port: 5055
+    ingress:
+        enabled: true
+        ingressClassName: traefik
+        tls:
+            - hosts:
+                - "jellyseer.k3s.micasa.systems"
+        hosts:
+         - host: "jellyseer.k3s.micasa.systems"
+           paths: 
+            - path: /
+              pathType: ImplementationSpecific
+    env:
+        - name: PUID
+          value: "65533"
+        - name: PGID
+          value: "65533"
+    persistence:
+        enabled: true
+        volumes:
+          - name: jellyseer-config
+            storageClassName: "zfs"
+            accessMode: "ReadWriteOnce"
+            size: 1G
+        volumeMounts:
+          - name: jellyseer-config
+            mountPath: /config
