@@ -1,6 +1,6 @@
 dependencies:
 - name: jellyseer
   repository: https://thurcombe.github.io/nullpacket-charts/
-  version: 0.1.0
-digest: sha256:2c9e98539caf3525160875a53d42ddc96e6a844cc7eaf357f4d3074c6e32a573
-generated: "2025-06-04T14:38:02.451065329+01:00"
+  version: 0.1.2
+digest: sha256:d4d8eabf3f52a7a2990afff32ca96242559f9464bf00a4136d14a8e2bf899249
+generated: "2025-06-04T16:30:10.226875759+01:00"

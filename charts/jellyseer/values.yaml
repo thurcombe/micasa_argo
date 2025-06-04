@@ -27,4 +27,4 @@ jellyseer:
             size: 1G
         volumeMounts:
           - name: jellyseer-config
-            mountPath: /config
+            mountPath: /app/config
