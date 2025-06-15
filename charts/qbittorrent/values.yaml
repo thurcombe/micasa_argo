@@ -44,17 +44,16 @@ qbittorrent:
         mountPath: /media
   vpn:
     enabled: true
-    credentials: 
-      secretName: vpn-secret
-      password: "REDACTED"
-      username: "REDACTED"
-    env:
-      - name: DNS_ADDRESS
-        value: "1.1.1.1"
-      - name: VPN_SERVICE_PROVIDER
-        value: "nordvpn"
-      - name: SERVER_COUNTRIES
-        value: "United Kingdom"
+    provider:
+      name: nordvpn
+      protocol: openvpn
+      credentials: 
+        password: "REDACTED"
+        username: "REDACTED"
+      configuration:
+        dns_address: 1.1.1.1
+        vpn_service_provider: nordvpn
+        server_countries: "United Kingdom"
     volumes:
       - name: gluetun-config
         size: 250M
