@@ -46,13 +46,7 @@ qbittorrent:
       configuration:
         dns_address: "1.1.1.1"
         vpn_service_provider: protonvpn
-    env:
-      - name: DNS_ADDRESS
-        value: "1.1.1.1"
-      - name: VPN_SERVICE_PROVIDER
-        value: "nordvpn"
-      - name: SERVER_COUNTRIES
-        value: "United Kingdom"
+    env: []
     volumes:
       - name: gluetun-config
         size: 250M
