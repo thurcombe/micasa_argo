@@ -51,7 +51,7 @@ qbittorrent:
         vpn_port_forwarding_status_file: /tmp/forwarded_port
         vpn_port_forwarding_provider: protonvpn
         server_countries: "United Kingdom"
-        vpn_port_forwarding_up_command: "/bin/sh -c 'PORT=\$(/bin/cat \$VPN_PORT_FORWARDING_STATUS_FILE | /usr/bin/cut -d'/' -f1); /usr/bin/wget -O- --retry-connrefused --post-data \"json={\\\"listen_port\\\":\$PORT}\" http://127.0.0.1:8080/api/v2/app/setPreferences'" 
+        vpn_port_forwarding_up_command: "/bin/sh -c \"PORT=\\$(/bin/cat \\$VPN_PORT_FORWARDING_STATUS_FILE | /usr/bin/cut -d'/' -f1); /usr/bin/wget -O- --retry-connrefused --post-data 'json={\\\"listen_port\\\":\\$PORT}' http://127.0.0.1:8080/api/v2/app/setPreferences\""
     env: []
     volumes:
       - name: gluetun-config
