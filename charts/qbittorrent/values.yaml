@@ -46,6 +46,8 @@ qbittorrent:
       configuration:
         dns_address: "1.1.1.1"
         vpn_service_provider: protonvpn
+        port_forward_only: on
+        vpn_port_forward: on
     env: []
     volumes:
       - name: gluetun-config
