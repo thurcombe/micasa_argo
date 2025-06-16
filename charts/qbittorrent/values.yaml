@@ -36,7 +36,7 @@ qbittorrent:
       - name: media
         mountPath: /media
   vpn:
-    enabled: false
+    enabled: true
     provider:
       name: protonvpn
       protocol: wireguard
