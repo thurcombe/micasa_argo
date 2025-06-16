@@ -45,6 +45,7 @@ qbittorrent:
           privateKey: "REDACTED"
       configuration:
         dns_address: "1.1.1.1"
+        vpn_service_provider: protonvpn
     env:
       - name: DNS_ADDRESS
         value: "1.1.1.1"
