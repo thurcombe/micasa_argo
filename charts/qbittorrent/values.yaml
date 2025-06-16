@@ -49,6 +49,7 @@ qbittorrent:
         port_forward_only: on
         vpn_port_forward: on
         vpn_port_forwarding_status_file: /tmp/forwarded_port
+        vpn_port_forwarding_provider: protonvpn
     env: []
     volumes:
       - name: gluetun-config
