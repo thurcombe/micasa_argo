@@ -50,6 +50,7 @@ qbittorrent:
         vpn_port_forwarding: on
         vpn_port_forwarding_status_file: /tmp/forwarded_port
         vpn_port_forwarding_provider: protonvpn
+        server_countries: "United Kingdom"
     env: []
     volumes:
       - name: gluetun-config
