@@ -41,7 +41,8 @@ qbittorrent:
       name: protonvpn
       protocol: wireguard
       credentials:
-        privateKey: "REDACTED"
+        wireguard:
+          privateKey: "REDACTED"
       configuration:
         dns_address: "1.1.1.1"
     env:
