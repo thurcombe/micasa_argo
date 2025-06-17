@@ -1,6 +1,6 @@
 dependencies:
 - name: radarr
   repository: https://thurcombe.github.io/nullpacket-charts/
-  version: 0.1.6
-digest: sha256:5523c1706b924040ec0f415b09f0d460a8707234c57be8bd8c750aafe17e6b37
-generated: "2025-05-30T08:12:12.644404725+01:00"
+  version: 0.1.7
+digest: sha256:35fd2040dd449e8d35515ec554ab85b8b26646c31930bdefe5b23c5e97342271
+generated: "2025-06-17T08:52:41.171566997+01:00"
