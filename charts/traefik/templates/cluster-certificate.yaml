@@ -5,8 +5,8 @@ metadata:
   namespace: traefik
 spec:
   dnsNames:
-  - "traefik.{{ .valuesClusterDNSName }}"
-  secretName: traefik-micasa-systems
+  - "traefik.{{ .Values.clusterDNSName }}"
+  secretName: traefik-certificate
   issuerRef:
     name: selfsigned
     kind: ClusterIssuer

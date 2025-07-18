@@ -24,27 +24,27 @@ traefik:
     dashboard:
       enabled: false
 
-  additionalVolumeMounts:
-    - name: wildcard-ssl
-      mountPath: /ssl
-
-  deployment:
-    additionalVolumes:
-      - name: wildcard-ssl
-        secret:
-          secretName: wildcard-micasa-k3s
-
-  tls:
-    options:
-      default:
-        sniStrict: true
-    certificates:
-      certFile: /ssl/tls.crt
-      keyFile: /ssl/tls.key
-      stores:
-        - default
-    stores:
-      default:
-        defaultCertificate:
-          certFile: /ssl/tls.crt
-          keyFile: /ssl/tls.key
+#  additionalVolumeMounts:
+#    - name: wildcard-ssl
+#      mountPath: /ssl
+#
+#  deployment:
+#    additionalVolumes:
+#      - name: wildcard-ssl
+#        secret:
+#          secretName: wildcard-micasa-k3s
+#
+#  tls:
+#    options:
+#      default:
+#        sniStrict: true
+#    certificates:
+#      certFile: /ssl/tls.crt
+#      keyFile: /ssl/tls.key
+#      stores:
+#        - default
+#    stores:
+#      default:
+#        defaultCertificate:
+#          certFile: /ssl/tls.crt
+#          keyFile: /ssl/tls.key
