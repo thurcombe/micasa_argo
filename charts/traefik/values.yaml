@@ -32,7 +32,7 @@ traefik:
     additionalVolumes:
       - name: wildcard-ssl
         secret:
-          secretName: star-dot-certificate
+          secretName: wildcard-micasa-k3s
 
   tls:
     options:
