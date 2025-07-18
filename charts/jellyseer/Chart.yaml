@@ -3,6 +3,6 @@ name: jellyseer
 version: 1.0.0
 dependencies:
   - name: jellyseer
-    version: 0.1.2
+    version: 0.1.3
     repository: https://thurcombe.github.io/nullpacket-charts/
 
