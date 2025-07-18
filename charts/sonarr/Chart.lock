@@ -1,6 +1,6 @@
 dependencies:
 - name: sonarr
   repository: https://thurcombe.github.io/nullpacket-charts/
-  version: 0.1.4
-digest: sha256:431e0a7630819f70d3fb63ed19b0a2a0f8a48c259614d1e41e119c8ed55ea742
-generated: "2025-05-21T14:14:39.232586677+01:00"
+  version: 0.1.6
+digest: sha256:87d3dd2676306b433b56d994c437d325ed9443f6ce67b5624a26a41df4f1873d
+generated: "2025-07-18T09:29:54.275078549+01:00"
