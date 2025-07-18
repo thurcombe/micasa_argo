@@ -1,6 +1,6 @@
 dependencies:
 - name: jellyfin
   repository: https://thurcombe.github.io/nullpacket-charts/
-  version: 0.1.2
-digest: sha256:719b63451d5c2bec8296a49dce6418f4623d1ba8f1b493e1fdc2db81a55d6cc1
-generated: "2025-05-21T14:15:45.152867666+01:00"
+  version: 0.1.4
+digest: sha256:511c400a0ca86db34b2b00a7d20be6237fedbc70a2bff4d04abe58df8de5aea0
+generated: "2025-07-18T08:57:25.996775453+01:00"
