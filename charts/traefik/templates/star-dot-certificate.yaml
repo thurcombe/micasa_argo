@@ -8,5 +8,5 @@ spec:
   dnsNames:
   - "*.{{ .Values.clusterDNSName }}"
   issuerRef:
-    name: selfsigned
-    kind: letsencrypt
+    name: letsencrypt
+    kind: ClusterIssuer
