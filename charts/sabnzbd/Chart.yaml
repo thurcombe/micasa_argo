@@ -3,5 +3,5 @@ name: sabnzbd
 version: 1.0.0
 dependencies:
   - name: sabnzbd
-    version: 0.1.5
+    version: 0.1.7
     repository: https://thurcombe.github.io/nullpacket-charts/
