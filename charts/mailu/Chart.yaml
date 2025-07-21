@@ -3,5 +3,5 @@ name: mailu
 version: 1.0.0
 dependencies:
   - name: mailu
-    version: 2.1.2
+    version: 2.2.2
     repository: https://mailu.github.io/helm-charts/
