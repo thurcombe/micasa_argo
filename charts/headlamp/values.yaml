@@ -4,15 +4,12 @@ headlamp:
   ingress:
     enabled: true
     ingressClassName: traefik
-    annotations:
-      cert-manager.io/cluster-issuer: selfsigned
     hosts:
      - host: ui.k3s.micasa.systems
        paths:
          - path: /
            type: ImplementationSpecific
     tls:
-      - secretName: headlamp-certificates
         hosts:
           - ui.k3s.micasa.systems
   persistentVolumeClaim:
