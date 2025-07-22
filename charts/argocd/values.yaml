@@ -3,7 +3,7 @@ argo-cd:
     - name: argocd-cm
       data:
         repositories: |
-          - url: "https://gitlab.com/n3wz/deployment.git"
+          - url: "https://gitlab.com/n3wz/deploymentdeployment.git"
             token: ""
             ssh: false
         git:
@@ -20,6 +20,9 @@ argo-cd:
     domain: argo.k3s.micasa.systems
 
   server:
+    certificate:
+      issuer:
+        name: letsencrypt
     ingress:
       enabled: true
       ingressClassName: traefik
