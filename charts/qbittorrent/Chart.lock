@@ -1,6 +1,6 @@
 dependencies:
 - name: qbittorrent
   repository: https://thurcombe.github.io/nullpacket-charts/
-  version: 0.1.8
-digest: sha256:698f9d49f8081188631f4caf20134b293b25b26362253caee828c10da5092688
-generated: "2025-07-18T08:51:20.064798036+01:00"
+  version: 0.1.9
+digest: sha256:2daa784d2d88f3fef5cdfa55723bec157a88574b2fcb6fe2ecd3757a839f72e7
+generated: "2025-07-24T08:51:39.177554309+01:00"
