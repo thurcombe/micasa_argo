@@ -3,5 +3,5 @@ name: qbittorrent
 version: 1.0.0
 dependencies:
   - name: qbittorrent
-    version: 0.1.8
+    version: 0.1.9
     repository: https://thurcombe.github.io/nullpacket-charts/

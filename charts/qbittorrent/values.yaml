@@ -6,6 +6,8 @@ qbittorrent:
       value: "65533"
   image: 
     repository: linuxserver/qbittorrent
+  vuetorrent:
+    enabled: true
   ingress:
     enabled: true
     className: traefik
