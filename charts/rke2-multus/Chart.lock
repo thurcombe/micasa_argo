@@ -1,6 +1,6 @@
 dependencies:
 - name: rke2-multus
   repository: https://rke2-charts.rancher.io
-  version: v4.2.000
-digest: sha256:68c58e1df6d69620a79f0ed16517f40d4c2d968a80debc13309f8af557f56090
-generated: "2025-03-26T23:36:03.763448011Z"
+  version: v4.2.106
+digest: sha256:6a6a8b102f3cfd39632d4eee0efbdaf70d834adb18e5d89ed4d62b42f080c36e
+generated: "2025-07-25T13:12:27.932610388Z"
