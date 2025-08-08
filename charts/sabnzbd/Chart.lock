@@ -1,6 +1,0 @@
-dependencies:
-- name: sabnzbd
-  repository: https://thurcombe.github.io/nullpacket-charts/
-  version: 0.1.7
-digest: sha256:fac8c8f2f3c73686956586f21b871e81b49d5b377b4e11c92ef6c8ae7b765f6a
-generated: "2025-07-18T09:37:16.379851803+01:00"
