@@ -12,6 +12,92 @@ mailu:
   dovecot:
     persistence:
         storageClass: zfs
+    extraVolumes:
+    # IMAPSieve + extprograms config snippets
+    - name: imapsieve-conf
+      configMap:
+        name: dovecot-imapsieve
+        items:
+          - key: 90-imap-sieve.conf
+            path: 90-imap-sieve.conf
+          - key: 92-extprograms.conf
+            path: 92-extprograms.conf
+        defaultMode: 0444
+
+    # Sieve scripts (run on move to/from Junk)
+    - name: imapsieve-scripts
+      configMap:
+        name: dovecot-imapsieve
+        items:
+          - key: report-spam.sieve
+            path: report-spam.sieve
+          - key: report-ham.sieve
+            path: report-ham.sieve
+        defaultMode: 0444
+
+    # Executable helper scripts (they use curl to POST to Rspamd)
+    - name: imapsieve-bin
+      configMap:
+        name: dovecot-imapsieve
+        items:
+          - key: rspamd-learn-spam
+            path: rspamd-learn-spam
+          - key: rspamd-learn-ham
+            path: rspamd-learn-ham
+        defaultMode: 0755
+
+    # Controller password (Secret with key "password")
+    - name: rspamd-controller-secret
+      secret:
+        secretName: rspamd-controller
+        items:
+          - key: password
+            path: password
+        defaultMode: 0400
+
+  extraVolumeMounts:
+    # Drop-in Dovecot config to load imap_sieve for IMAP
+    - name: imapsieve-conf
+      mountPath: /etc/dovecot/conf.d/90-imap-sieve.conf
+      subPath: 90-imap-sieve.conf
+      readOnly: true
+    - name: imapsieve-conf
+      mountPath: /etc/dovecot/conf.d/92-extprograms.conf
+      subPath: 92-extprograms.conf
+      readOnly: true
+
+    # Sieve scripts
+    - name: imapsieve-scripts
+      mountPath: /conf/report-spam.sieve
+      subPath: report-spam.sieve
+      readOnly: true
+    - name: imapsieve-scripts
+      mountPath: /conf/report-ham.sieve
+      subPath: report-ham.sieve
+      readOnly: true
+
+    # Executables called by the Sieve scripts
+    - name: imapsieve-bin
+      mountPath: /conf/bin/rspamd-learn-spam
+      subPath: rspamd-learn-spam
+    - name: imapsieve-bin
+      mountPath: /conf/bin/rspamd-learn-ham
+      subPath: rspamd-learn-ham
+
+    # Controller password file available to the helpers
+    - name: rspamd-controller-secret
+      mountPath: /conf/secret/password
+      subPath: password
+      readOnly: true
+
+  # Optional: expose ManageSieve (4190) if you want a client to manage Sieve
+  service:
+    extraPorts:
+      - name: managesieve
+        port: 4190
+        targetPort: 4190
+        protocol: TCP
+        
   postfix:
     persistence:
         storageClass: zfs
