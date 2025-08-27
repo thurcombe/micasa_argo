@@ -97,7 +97,7 @@ mailu:
         port: 4190
         targetPort: 4190
         protocol: TCP
-        
+
   postfix:
     persistence:
         storageClass: zfs
@@ -115,6 +115,19 @@ mailu:
   webmail:
     persistence:
       storageClass: zfs
+    extraVolumes:
+      - name: rc-overrides
+        configMap:
+          name: rc-managesieve-override
+          items:
+            - key: managesieve.inc.php
+              path: managesieve.inc.php
+          defaultMode: 0444
+    extraVolumeMounts:
+      - name: rc-overrides
+        mountPath: /overrides/roundcube/managesieve.inc.php
+        subPath: managesieve.inc.php
+        readOnly: true
   initialAccount:
     enabled: true
     domain: micasa.systems

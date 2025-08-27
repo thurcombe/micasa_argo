@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rc-managesieve-override
+  namespace: mailu
+data:
+  managesieve.inc.php: |-
+    <?php
+    // Roundcube ManageSieve plugin settings override
+    // Use your Dovecot Service DNS name below
+    $config['managesieve_host'] = 'mailu-dovecot';
+    $config['managesieve_port'] = 4190;
+
+    // Set to true ONLY if Dovecot offers STARTTLS on port 4190
+    $config['managesieve_usetls'] = false;
+
+    // Use same auth as IMAP (leave null)
+    $config['managesieve_auth_type'] = null;
+
+    // Optional timeouts (seconds)
+    $config['managesieve_conn_options'] = [
+      'timeout' => 10,
+      'stream_context_options' => [],
+    ];
