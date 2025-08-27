@@ -132,6 +132,10 @@ mailu:
         mountPath: /overrides/roundcube/plugins/managesieve/config.inc.php
         subPath: config.inc.php
         readOnly: true
+      - name: rc-overrides
+        mountPath: /overrides/roundcube/config.inc.php
+        subPath: config.inc.php
+        readOnly: true
   initialAccount:
     enabled: true
     domain: micasa.systems
