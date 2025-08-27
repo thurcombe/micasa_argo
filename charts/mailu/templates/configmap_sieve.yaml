@@ -16,9 +16,3 @@ data:
 
     // Use same auth as IMAP (leave null)
     $config['managesieve_auth_type'] = null;
-
-    // Optional timeouts (seconds)
-    $config['managesieve_conn_options'] = [
-      'timeout' => 10,
-      'stream_context_options' => [],
-    ];
