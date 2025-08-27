@@ -129,7 +129,7 @@ mailu:
           defaultMode: 0444
     extraVolumeMounts:
       - name: rc-overrides
-        mountPath: /overrides/roundcube/config.inc.php
+        mountPath: /overrides/roundcube/plugins/managesieve/config.inc.php
         subPath: config.inc.php
         readOnly: true
   initialAccount:
