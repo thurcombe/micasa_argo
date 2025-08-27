@@ -4,7 +4,7 @@ metadata:
   name: rc-managesieve-override
   namespace: mailu
 data:
-  managesieve.inc.php: |-
+  config.inc.php: |-
     <?php
     // Roundcube ManageSieve plugin settings override
     // Use your Dovecot Service DNS name below
