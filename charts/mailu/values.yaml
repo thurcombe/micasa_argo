@@ -10,6 +10,8 @@ mailu:
     storageClass: zfs
     single_pvc: false
   dovecot:
+    updateStrategy:
+      type: Recreate
     persistence:
         storageClass: zfs
     extraVolumes:
@@ -113,6 +115,8 @@ mailu:
     persistence:
         storageClass: zfs
   webmail:
+    updateStrategy:
+      type: Recreate
     persistence:
       storageClass: zfs
     extraVolumes:
