@@ -124,13 +124,13 @@ mailu:
         configMap:
           name: rc-managesieve-override
           items:
-            - key: managesieve.inc.php
-              path: managesieve.inc.php
+            - key: config.inc.php
+              path: config.inc.php
           defaultMode: 0444
     extraVolumeMounts:
       - name: rc-overrides
-        mountPath: /overrides/roundcube/managesieve.inc.php
-        subPath: managesieve.inc.php
+        mountPath: /overrides/roundcube/config.inc.php
+        subPath: config.inc.php
         readOnly: true
   initialAccount:
     enabled: true
