@@ -115,7 +115,7 @@ mailu:
         BLACKLIST_SENDER {
          type = "from";
          filter = "email:addr";
-         map = "/overrides/rspamd/blacklist_sender.map";
+         map = "/overrides/blacklist_sender.map";
          symbol = "BLACKLIST_SENDER";
          description = "Hard block specific From addresses";
          action = "reject";
