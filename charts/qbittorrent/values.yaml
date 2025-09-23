@@ -6,6 +6,7 @@ qbittorrent:
       value: "65533"
   image: 
     repository: linuxserver/qbittorrent
+    pullPolicy: Always
   vuetorrent:
     enabled: true
   ingress:
