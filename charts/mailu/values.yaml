@@ -115,16 +115,23 @@ mailu:
         BLACKLIST_SENDER {
          type = "from";
          filter = "email:addr";
+         extract_from = "smtp";
          map = "/overrides/blacklist_sender.map";
          symbol = "BLACKLIST_SENDER";
          description = "Hard block specific From addresses";
          action = "reject";
         }
       blacklist_sender.map: |
-        @news-doyouspain.com
-        @doyouspain.com
-        @casinotrust.com
+        news-doyouspain.com
+        .news-doyouspain.com
+        doyouspain.com
+        .doyouspain.com
+        casinotrust.com
+        .casinotrust.com
         topslotscasino.com
+        .topslotscasino.com
+        slots99.com
+        .slots99.com
 
   fetchmail:
     enabled: true
