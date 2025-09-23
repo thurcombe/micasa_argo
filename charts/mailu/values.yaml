@@ -121,8 +121,11 @@ mailu:
          action = "reject";
         }
       blacklist_sender.map: |
-        claire@news-doyouspain.com
-        tezmobile@googlemail.com
+        @news-doyouspain.com
+        @doyouspain.com
+        @casinotrust.com
+        topslotscasino.com
+
   fetchmail:
     enabled: true
     logLevel: debug
