@@ -109,6 +109,20 @@ mailu:
   rspamd:
     persistence:
       storageClass: zfs
+    overrides:
+      # merged into Rspamd config (no need for a separate ConfigMap)
+      multimap.conf: |
+        BLACKLIST_SENDER {
+         type = "from";
+         filter = "email:addr";
+         map = "/overrides/rspamd/blacklist_sender.map";
+         symbol = "BLACKLIST_SENDER";
+         description = "Hard block specific From addresses";
+         action = "reject";
+        }
+      blacklist_sender.map: |
+        claire@news-doyouspain.com
+        tezmobile@googlemail.com
   fetchmail:
     enabled: true
     logLevel: debug
