@@ -114,7 +114,7 @@ mailu:
       multimap.conf: |
         BLACKLIST_SENDER {
          type = "from";
-         filter = "email:addr";
+         filter = "email:domain";
          extract_from = "smtp";
          map = "/overrides/blacklist_sender.map";
          symbol = "BLACKLIST_SENDER";
