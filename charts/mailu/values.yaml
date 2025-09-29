@@ -133,7 +133,7 @@ mailu:
         *.topslotscasino.com
         slots99.com
         *.slots99.com
-        tezmobile@googlemail.com
+        googlemail.com
   fetchmail:
     enabled: true
     logLevel: debug
