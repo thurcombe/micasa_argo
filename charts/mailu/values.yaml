@@ -114,13 +114,13 @@ mailu:
       multimap.conf: |
         BLACKLIST_SENDER {
           type = "from";
-          extract_from = "smtp";
-          filter = "email";
-          map = "/overrides/blacklist_sender.map";
-          map_type = "glob";     # enable wildcards
-          prefilter = true;
+          extract_from = "smtp";                 # envelope MAIL FROM
+          filter = "email";                      # match against full address
+          map = "glob;/overrides/blacklist_sender.map";  # <-- enable globs
+          prefilter = true;                      # enforce 'action' immediately
           action = "reject";
           symbol = "BLACKLIST_SENDER";
+          message = "Sender blocked by policy";
         }
       blacklist_sender.map: |
         news-doyouspain.com
