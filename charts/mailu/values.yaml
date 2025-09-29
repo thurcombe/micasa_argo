@@ -123,17 +123,17 @@ mailu:
           message = "Sender blocked by policy";
         }
       blacklist_sender.map: |
-        news-doyouspain.com
-        *.news-doyouspain.com
-        doyouspain.com
-        *.doyouspain.com
-        casinotrust.com
-        *.casinotrust.com
-        topslotscasino.com
-        *.topslotscasino.com
-        slots99.com
-        *.slots99.com
-        tezmobile@googlemail.com
+        *@news-doyouspain.com
+        *@*.news-doyouspain.com
+        *@doyouspain.com
+        *@*.doyouspain.com
+        *@casinotrust.com
+        *@*.casinotrust.com
+        *@topslotscasino.com
+        *@*.topslotscasino.com
+        *@slots99.com
+        *@*.slots99.com
+        onlinebingooffers@outlook.com
   fetchmail:
     enabled: true
     logLevel: debug
