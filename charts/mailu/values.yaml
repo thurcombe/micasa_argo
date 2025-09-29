@@ -113,26 +113,26 @@ mailu:
       # merged into Rspamd config (no need for a separate ConfigMap)
       multimap.conf: |
         BLACKLIST_SENDER {
-         type = "from";
-         filter = "email:domain";
-         extract_from = "smtp";
-         map = "/overrides/blacklist_sender.map";
-         symbol = "BLACKLIST_SENDER";
-         description = "Hard block specific From addresses";
-         action = "reject";
-        }
+          type = "from";
+          extract_from = "smtp";
+          filter = "email";
+          map = "/overrides/blacklist_sender.map";
+          map_type = "glob";     # enable wildcards
+          prefilter = true;
+          action = "reject";
+          symbol = "BLACKLIST_SENDER";
       blacklist_sender.map: |
         news-doyouspain.com
-        .news-doyouspain.com
+        *.news-doyouspain.com
         doyouspain.com
-        .doyouspain.com
+        *.doyouspain.com
         casinotrust.com
-        .casinotrust.com
+        *.casinotrust.com
         topslotscasino.com
-        .topslotscasino.com
+        *.topslotscasino.com
         slots99.com
-        .slots99.com
-
+        *.slots99.com
+        tezmobile@googlemail.com
   fetchmail:
     enabled: true
     logLevel: debug
