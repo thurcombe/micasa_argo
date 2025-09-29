@@ -121,6 +121,7 @@ mailu:
           prefilter = true;
           action = "reject";
           symbol = "BLACKLIST_SENDER";
+        }
       blacklist_sender.map: |
         news-doyouspain.com
         *.news-doyouspain.com
