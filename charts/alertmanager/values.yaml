@@ -20,7 +20,8 @@ alertmanager:
         email_configs:
           - to: "tezmobile@googlemail.com"
             send_resolved: true
-
+  extraArgs:
+    - --log.level=debug
   ingress:
     enabled: true
     className: "traefik "
