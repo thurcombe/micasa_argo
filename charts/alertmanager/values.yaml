@@ -23,7 +23,7 @@ alertmanager:
             html: '{{ template "email.default.html" . }}'
             headers:
               subject: '[AM] {{ .Status | toUpper }} {{ if eq (len .Alerts) 1 }}{{ (index .Alerts 0).Labels.alertname }}{{ else }}{{ len .Alerts }} alerts{{ end }}'
-            # use the HTML template below
+    templates:
       - "/etc/alertmanager/templates/*.tmpl"
   templateFiles:
     email.default.tmpl: |
