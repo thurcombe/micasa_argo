@@ -2,7 +2,7 @@ alertmanager:
   config:
     global:
       smtp_smarthost: "gmail-smtp-in.l.google.com:25"   # or :587 / :465 as your MTA uses
-      smtp_from: "alerts@mail.micasa.lan"
+      smtp_from: "alerts@thurcombe.com"
       # If your server wants STARTTLS but no auth:
       # smtp_require_tls: true
       # If it's plain port 25 with no TLS on your LAN:
