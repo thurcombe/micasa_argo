@@ -2,13 +2,13 @@ alertmanager:
   config:
     global:
       smtp_smarthost: "gmail-smtp-in.l.google.com:25"   # or :587 / :465 as your MTA uses
-      smtp_from: "alerts@mail.micasa.systems"
+      smtp_from: "alerts@mail.micasa.lan"
       # If your server wants STARTTLS but no auth:
       # smtp_require_tls: true
       # If it's plain port 25 with no TLS on your LAN:
       smtp_require_tls: false
       # Optional but helpful (matches reverse DNS / allowlist rules):
-      smtp_hello: "alertmanager.k3s.micasa.systems"
+      smtp_hello: "alertmanager.k3s.micasa.lan"
     route:
       receiver: "email-me"
       group_by: ["alertname","namespace"]
