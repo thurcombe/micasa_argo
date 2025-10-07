@@ -1,0 +1,7 @@
+apiVersion: v2
+name: kube-events
+version: 1.0.0
+dependencies:
+  - name: kube-events
+    version: 0.9.0
+    repository: https://charts.kubesphere.io/main

@@ -1,0 +1,16 @@
+kube-events:
+# where to POST alerts (keep it in-cluster; change if your svc name/namespace differ)
+  alertmanager:
+    url: "http://alertmanager.alertmanager.svc:9093"
+
+  # enable/disable individual rules
+  rules:
+    crashLoopBackOff: true
+    imagePullBackOff: true
+    oomKill: true
+    nodeNotReady: true
+    failedScheduling: true
+    backOffLimitExceeded: true   # Jobs hitting backoffLimit
+
+  # pass-thru to the kube-events subchart if you need tweaks; usually empty is fine
+  kube-events: {}

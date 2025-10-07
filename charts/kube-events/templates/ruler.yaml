@@ -1,0 +1,10 @@
+apiVersion: events.kubesphere.io/v1alpha1
+kind: Ruler
+metadata:
+  name: events-to-alertmanager
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  sinks:
+    alertmanagers:
+      - url: {{ .Values.alertmanager.url | quote }}

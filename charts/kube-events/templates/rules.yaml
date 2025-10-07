@@ -1,0 +1,57 @@
+apiVersion: events.kubesphere.io/v1alpha1
+kind: Rule
+metadata:
+  name: kube-events-core
+  namespace: {{ .Release.Namespace }}
+  labels:
+    kubesphere.io/rule-scope: cluster
+spec:
+  rules:
+  {{- if .Values.rules.crashLoopBackOff }}
+    - name: CrashLoopBackOff
+      condition: 'reason == "BackOff" && involvedObject.kind == "Pod"'
+      labels: { severity: warning, alerttype: event }
+      annotations:
+        summary: 'Pod {{ .involvedObject.namespace }}/{{ .involvedObject.name }} is CrashLoopBackOff'
+        description: '{{ .message }}'
+  {{- end }}
+  {{- if .Values.rules.imagePullBackOff }}
+    - name: ImagePullBackOff
+      condition: 'reason in ["ImagePullBackOff","ErrImagePull"] && involvedObject.kind == "Pod"'
+      labels: { severity: warning, alerttype: event }
+      annotations:
+        summary: 'Image pull failed for Pod {{ .involvedObject.namespace }}/{{ .involvedObject.name }}'
+        description: '{{ .message }}'
+  {{- end }}
+  {{- if .Values.rules.oomKill }}
+    - name: OOMKill
+      condition: 'reason == "OOMKilling" || (reason == "Killing" && "oom" in toLower(message))'
+      labels: { severity: critical, alerttype: event }
+      annotations:
+        summary: 'Container OOMKill in {{ .involvedObject.namespace }}/{{ .involvedObject.name }}'
+        description: '{{ .message }}'
+  {{- end }}
+  {{- if .Values.rules.nodeNotReady }}
+    - name: NodeNotReady
+      condition: 'reason == "NodeNotReady" && involvedObject.kind == "Node"'
+      labels: { severity: critical, alerttype: event }
+      annotations:
+        summary: 'Node {{ .involvedObject.name }} is NotReady'
+        description: '{{ .message }}'
+  {{- end }}
+  {{- if .Values.rules.failedScheduling }}
+    - name: FailedScheduling
+      condition: 'reason == "FailedScheduling" && involvedObject.kind == "Pod"'
+      labels: { severity: warning, alerttype: event }
+      annotations:
+        summary: 'Pod {{ .involvedObject.namespace }}/{{ .involvedObject.name }} failed scheduling'
+        description: '{{ .message }}'
+  {{- end }}
+  {{- if .Values.rules.backOffLimitExceeded }}
+    - name: JobBackOffLimitExceeded
+      condition: 'reason == "BackoffLimitExceeded" && involvedObject.kind == "Job"'
+      labels: { severity: warning, alerttype: event }
+      annotations:
+        summary: 'Job {{ .involvedObject.namespace }}/{{ .involvedObject.name }} backoffLimit exceeded'
+        description: '{{ .message }}'
+  {{- end }}
