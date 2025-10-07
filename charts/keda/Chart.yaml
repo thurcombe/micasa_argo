@@ -1,0 +1,8 @@
+apiVersion: v2
+name: keda-test
+version: 1.0.0
+
+dependencies:
+  - name: keda
+    repository: https://kedacore.github.io/charts
+    version: ">=2.0.0"
