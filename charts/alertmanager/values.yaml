@@ -25,6 +25,8 @@ alertmanager:
               subject: >-
                 [AM] {{ .Status | toUpper }} {{ if eq (len .Alerts) 1 }}
                 {{ (index .Alerts 0).Labels.alertname }}
+    templates:
+      - "/etc/alertmanager/templates/*.tmpl"
     templateFiles:
       email.default.tmpl: |
         {{ define "email.default.html" }}
@@ -37,7 +39,7 @@ alertmanager:
               {{ len .Alerts }} alerts
             {{ end }}
           </h2>
-  
+
           {{ if .GroupLabels }}
           <p style="margin:0 0 12px 0; color:#666;">
             {{- range $k, $v := .GroupLabels -}}
@@ -47,11 +49,11 @@ alertmanager:
             {{- end -}}
           </p>
           {{ end }}
-  
+
           {{ if .CommonAnnotations.summary }}
           <p style="margin:0 12px 12px 0"><strong>{{ .CommonAnnotations.summary }}</strong></p>
           {{ end }}
-  
+
           <table cellpadding="6" cellspacing="0" border="0" style="border-collapse:collapse; width:100%; max-width:900px">
             <thead>
               <tr style="border-bottom:1px solid #ddd">
@@ -85,7 +87,7 @@ alertmanager:
               {{ end }}
             </tbody>
           </table>
-  
+
           {{ if .ExternalURL }}
           <p style="margin-top:12px">
             <a href="{{ .ExternalURL }}" style="text-decoration:none">Open Alertmanager</a>
