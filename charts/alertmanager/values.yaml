@@ -27,74 +27,70 @@ alertmanager:
                 {{ (index .Alerts 0).Labels.alertname }}
     templates:
       - "/etc/alertmanager/templates/*.tmpl"
-    templateFiles:
-      email.default.tmpl: |
-        {{ define "email.default.html" }}
-        <div style="font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
-          <h2 style="margin:0 0 8px 0">
-            [{{ .Status | toUpper }}]
-            {{ if eq (len .Alerts) 1 }}
-              {{ (index .Alerts 0).Labels.alertname }}
-            {{ else }}
-              {{ len .Alerts }} alerts
-            {{ end }}
-          </h2>
-
-          {{ if .GroupLabels }}
-          <p style="margin:0 0 12px 0; color:#666;">
-            {{- range $k, $v := .GroupLabels -}}
-              <span style="display:inline-block; padding:2px 6px; border-radius:4px; background:#f1f1f1; margin-right:6px;">
-                {{$k}}=<code>{{$v}}</code>
-              </span>
-            {{- end -}}
-          </p>
+  templateFiles:
+    email.default.tmpl: |
+      {{ define "email.default.html" }}
+      <div style="font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+        <h2 style="margin:0 0 8px 0">
+          [{{ .Status | toUpper }}]
+          {{ if eq (len .Alerts) 1 }}
+            {{ (index .Alerts 0).Labels.alertname }}
+          {{ else }}
+            {{ len .Alerts }} alerts
           {{ end }}
-
-          {{ if .CommonAnnotations.summary }}
-          <p style="margin:0 12px 12px 0"><strong>{{ .CommonAnnotations.summary }}</strong></p>
-          {{ end }}
-
-          <table cellpadding="6" cellspacing="0" border="0" style="border-collapse:collapse; width:100%; max-width:900px">
-            <thead>
-              <tr style="border-bottom:1px solid #ddd">
-                <th align="left">Severity</th>
-                <th align="left">Alert</th>
-                <th align="left">Namespace</th>
-                <th align="left">Object</th>
-                <th align="left">Started</th>
-                <th align="left">Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {{ range .Alerts }}
-              <tr style="border-top:1px solid #eee">
-                <td>{{ or .Labels.severity "unknown" }}</td>
-                <td>{{ .Labels.alertname }}</td>
-                <td>{{ or .Labels.namespace "-" }}</td>
-                <td>
-                  {{- if .Labels.pod -}}pod/{{ .Labels.pod }}
-                  {{- else if .Labels.deployment -}}deploy/{{ .Labels.deployment }}
-                  {{- else if .Labels.instance -}}{{ .Labels.instance }}
-                  {{- else -}}-{{- end -}}
-                </td>
-                <td>{{ .StartsAt }}</td>
-                <td>
-                  {{- if .Annotations.summary -}}{{ .Annotations.summary }}{{- end -}}
-                  {{- if and .Annotations.summary .Annotations.description -}} — {{- end -}}
-                  {{- if .Annotations.description -}}{{ .Annotations.description }}{{- end -}}
-                </td>
-              </tr>
-              {{ end }}
-            </tbody>
-          </table>
-
-          {{ if .ExternalURL }}
-          <p style="margin-top:12px">
-            <a href="{{ .ExternalURL }}" style="text-decoration:none">Open Alertmanager</a>
-          </p>
-          {{ end }}
-        </div>
+        </h2>
+        {{ if .GroupLabels }}
+        <p style="margin:0 0 12px 0; color:#666;">
+          {{- range $k, $v := .GroupLabels -}}
+            <span style="display:inline-block; padding:2px 6px; border-radius:4px; background:#f1f1f1; margin-right:6px;">
+              {{$k}}=<code>{{$v}}</code>
+            </span>
+          {{- end -}}
+        </p>
         {{ end }}
+        {{ if .CommonAnnotations.summary }}
+        <p style="margin:0 12px 12px 0"><strong>{{ .CommonAnnotations.summary }}</strong></p>
+        {{ end }}
+        <table cellpadding="6" cellspacing="0" border="0" style="border-collapse:collapse; width:100%; max-width:900px">
+          <thead>
+            <tr style="border-bottom:1px solid #ddd">
+              <th align="left">Severity</th>
+              <th align="left">Alert</th>
+              <th align="left">Namespace</th>
+              <th align="left">Object</th>
+              <th align="left">Started</th>
+              <th align="left">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ range .Alerts }}
+            <tr style="border-top:1px solid #eee">
+              <td>{{ or .Labels.severity "unknown" }}</td>
+              <td>{{ .Labels.alertname }}</td>
+              <td>{{ or .Labels.namespace "-" }}</td>
+              <td>
+                {{- if .Labels.pod -}}pod/{{ .Labels.pod }}
+                {{- else if .Labels.deployment -}}deploy/{{ .Labels.deployment }}
+                {{- else if .Labels.instance -}}{{ .Labels.instance }}
+                {{- else -}}-{{- end -}}
+              </td>
+              <td>{{ .StartsAt }}</td>
+              <td>
+                {{- if .Annotations.summary -}}{{ .Annotations.summary }}{{- end -}}
+                {{- if and .Annotations.summary .Annotations.description -}} — {{- end -}}
+                {{- if .Annotations.description -}}{{ .Annotations.description }}{{- end -}}
+              </td>
+            </tr>
+            {{ end }}
+          </tbody>
+        </table>
+        {{ if .ExternalURL }}
+        <p style="margin-top:12px">
+          <a href="{{ .ExternalURL }}" style="text-decoration:none">Open Alertmanager</a>
+        </p>
+        {{ end }}
+      </div>
+      {{ end }}
   extraArgs:
     log.level: debug
   ingress:
