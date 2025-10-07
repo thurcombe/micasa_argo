@@ -27,6 +27,13 @@ alertmanager:
           # tls_config:
           #   insecure_skip_verify: true
 
+  templateFiles:
+    email.default.html: |
+      <h3>{{ .CommonLabels.alertname }} ({{ .Status }})</h3>
+      {{ range .Alerts }}
+        <p><b>{{ .Labels.severity }}</b> – {{ .Annotations.summary }}</p>
+      {{ end }}
+
   ingress:
     enabled: true
     className: "traefik "
