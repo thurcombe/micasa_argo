@@ -1,69 +1,70 @@
-# All values are passed to the dependency chart "zfs-exporter".
-# This config runs the exporter as a DaemonSet on your k3s node, exposes :9134,
-# and mounts the host's ZFS bits so metrics include pool health.
-
-zfs-exporter:
-  fullnameOverride: zfs-exporter
-  kind: DaemonSet
+app-template:
+  controller:
+    type: daemonset
 
   image:
     repository: enix/zfs-exporter
-    tag: "2.3.10"           # exporter app version
+    tag: "2.3.10"
     pullPolicy: IfNotPresent
 
-  # Exporter flags (keep it lean; enable snapshots if desired)
   args:
     - --deadline=8s
     - --web.listen-address=:9134
     - --collector.pool
     - --collector.dataset-filesystem
     - --collector.dataset-volume
-    # - --collector.dataset-snapshot
+    # - --collector.dataset-snapshot  # enable if you want snapshot metrics
 
   service:
-    enabled: true
-    type: ClusterIP
-    port: 9134
-  serviceMonitor:
-    enabled: false
-  podMonitor:
-    enabled: false
-  prometheusRule:
-    enabled: false
+    main:
+      enabled: true
+      type: ClusterIP
+      ports:
+        http:
+          port: 9134
+          protocol: TCP
 
-  monitoring:
-    serviceMonitor:
-      enabled: false
-    podMonitor:
-      enabled: false
-    prometheusRule:
-      enabled: false
-      
+  # Minimal annotations if your vmagent scrapes by annotations
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9134"
+    prometheus.io/path: /metrics
 
-  # Needs host ZFS access
+  # Privileged + host mounts for ZFS access
   securityContext:
     privileged: true
     runAsUser: 0
-
-  extraVolumes:
-    - name: dev
-      hostPath: { path: /dev }
-    - name: etc-zfs
-      hostPath: { path: /etc/zfs, type: DirectoryOrCreate }
-    - name: usr-sbin
-      hostPath: { path: /usr/sbin }
-    - name: sbin
-      hostPath: { path: /sbin }
-
-  extraVolumeMounts:
-    - { name: dev,      mountPath: /dev }
-    - { name: etc-zfs,  mountPath: /etc/zfs,  readOnly: true }
-    - { name: usr-sbin, mountPath: /usr/sbin, readOnly: true }
-    - { name: sbin,     mountPath: /sbin,     readOnly: true }
+    runAsNonRoot: false
+    allowPrivilegeEscalation: true
+  persistence:
+    dev:
+      enabled: true
+      type: hostPath
+      hostPath: /dev
+      mountPath: /dev
+      readOnly: false
+    etc-zfs:
+      enabled: true
+      type: hostPath
+      hostPath: /etc/zfs
+      mountPath: /etc/zfs
+      readOnly: true
+    usr-sbin:
+      enabled: true
+      type: hostPath
+      hostPath: /usr/sbin
+      mountPath: /usr/sbin
+      readOnly: true
+    sbin:
+      enabled: true
+      type: hostPath
+      hostPath: /sbin
+      mountPath: /sbin
+      readOnly: true
 
   nodeSelector:
     kubernetes.io/os: linux
   tolerations:
     - operator: Exists
 
-  resources: {}  # tune if you want
+  resources: {}

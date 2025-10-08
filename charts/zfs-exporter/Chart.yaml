@@ -1,10 +1,10 @@
 apiVersion: v2
-name: zfs-monitoring
-description: Lightweight ZFS exporter deployment (as a dependency) for VM/vmalert + Alertmanager setups
+name: zfs-exporter
+description: Run pdf/zfs_exporter via bjw-s/app-template (DaemonSet + Service). No CRDs.
 type: application
 version: 1.0.0
 
 dependencies:
-  - name: zfs-exporter
-    version: 2.1.1         # chart version from charts.enix.io (regular Helm repo)
-    repository: https://charts.enix.io/
+  - name: app-template
+    version: 4.2.0
+    repository: https://bjw-s.github.io/helm-charts/
