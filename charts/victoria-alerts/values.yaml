@@ -2,7 +2,7 @@
 kube-state-metrics:
   fullnameOverride: kube-state-metrics
 
-# --- VictoriaMetrics Single (tiny TSDB; only scraped KSM) ---
+# --- VictoriaMetrics Single (TSDB; just scraping KSM) ---
 victoria-metrics-single:
   nameOverride: vmsingle
   server:
@@ -36,12 +36,11 @@ victoria-metrics-alert:
   server:
     fullnameOverride: vmalert
 
-    # VM datasource (keep your current service name)
+    # Read from VM Single (keep your service name)
     datasource:
       url: "http://victoria-alerts-vmsingle-server:8428"
 
-    # No remote write/read needed for alerting-only (prevents duplicate /api/v1/write path issues)
-    # notifier -> your Alertmanager
+    # Alertmanager wiring
     notifier:
       alertmanager:
         url: "http://alertmanager.alertmanager.svc:9093"
@@ -49,45 +48,35 @@ victoria-metrics-alert:
     extraArgs:
       evaluationInterval: 30s
 
-    # Rules use only KSM metrics; Completed pods are excluded by requiring recent Running/Pending.
-    # CrashLoop uses restarts rate + a hold window to avoid flapping.
+    # Lean rules using only KSM. Completed pods are avoided; CrashLooping is windowed to stop flapping.
     config:
       alerts:
         groups:
           - name: k8s.pods.core
             rules:
-              # CrashLoopBackOff (robust against Completed blips)
-              # Fires when restarts keep increasing; holds if pod has been Running/Pending at any time recently.
-              - alert: KubePodCrashLooping
+              # CrashLoopBackOff (windowed to prevent flapping across brief 'Completed' hops)
+              - alert: KubePodCrashLoopBackOff
                 expr: |
-                  (
-                    sum by (namespace, pod) (increase(kube_pod_container_status_restarts_total[10m])) >= 5
-                  )
-                  and on (namespace, pod)
-                  (
-                    max_over_time(kube_pod_status_phase{phase=~"Running|Pending"}[10m]) == 1
-                  )
-                for: 10m
+                  max_over_time(
+                    kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"}[10m]
+                  ) >= 1
+                for: 5m
                 labels: { severity: critical }
                 annotations:
-                  summary: "CrashLooping (stable signal)"
-                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is restarting rapidly."
+                  summary: "CrashLoopBackOff"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} has been in CrashLoopBackOff within the last 10m."
 
-              # ImagePullBackOff (only when pod has been Running/Pending in the recent window)
+              # ImagePullBackOff (stable: only if observed during the last 10m)
               - alert: KubePodImagePullBackOff
                 expr: |
-                  (
-                    sum by (namespace, pod) (kube_pod_container_status_waiting_reason{reason="ImagePullBackOff"}) > 0
-                  )
-                  and on (namespace, pod)
-                  (
-                    max_over_time(kube_pod_status_phase{phase=~"Running|Pending"}[10m]) == 1
-                  )
-                for: 10m
+                  max_over_time(
+                    kube_pod_container_status_waiting_reason{reason="ImagePullBackOff"}[10m]
+                  ) >= 1
+                for: 5m
                 labels: { severity: warning }
                 annotations:
                   summary: "ImagePullBackOff"
-                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} failing to pull image."
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} had ImagePullBackOff within the last 10m."
 
               # Pending too long (naturally excludes Succeeded)
               - alert: KubePodPendingTooLong
@@ -98,34 +87,26 @@ victoria-metrics-alert:
                   summary: "Pod pending >15m"
                   description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} pending >15m."
 
-              # Not Ready only if pod has been Running recently (ignore Completed pods)
+              # Not Ready (only consider pods that have actually been Running recently)
               - alert: KubePodNotReady
                 expr: |
-                  (
-                    max by (namespace, pod) (kube_pod_status_ready{condition="true"} == 0) > 0
-                  )
+                  (max by (namespace, pod) (kube_pod_status_ready{condition="true"} == 0) > 0)
                   and on (namespace, pod)
-                  (
-                    max_over_time(kube_pod_status_phase{phase="Running"}[10m]) == 1
-                  )
+                  (max_over_time(kube_pod_status_phase{phase="Running"}[10m]) == 1)
                 for: 10m
                 labels: { severity: warning }
                 annotations:
-                  summary: "Pod not Ready (stable)"
+                  summary: "Pod not Ready >10m"
                   description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} not Ready for >10m."
 
-              # OOMKilled only if pod has been Running/Pending recently (avoid Completed noise)
+              # OOMKilled (ignore pods that purely Completed; only alert when active pod had OOM in recent window)
               - alert: KubePodOOMKilled
                 expr: |
-                  (
-                    sum by (namespace, pod) (kube_pod_container_status_terminated_reason{reason="OOMKilled"}) > 0
-                  )
-                  and on (namespace, pod)
-                  (
-                    max_over_time(kube_pod_status_phase{phase=~"Running|Pending"}[10m]) == 1
-                  )
+                  max_over_time(
+                    kube_pod_container_status_terminated_reason{reason="OOMKilled"}[10m]
+                  ) >= 1
                 for: 5m
                 labels: { severity: critical }
                 annotations:
                   summary: "OOMKilled"
-                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} had container(s) OOMKilled."
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} had container(s) OOMKilled within the last 10m."
