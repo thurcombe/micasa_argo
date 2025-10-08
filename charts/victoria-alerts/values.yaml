@@ -5,15 +5,12 @@ kube-state-metrics:
 # --- VictoriaMetrics Single (tiny TSDB; only scraped KSM) ---
 victoria-metrics-single:
   nameOverride: vmsingle
-
   server:
     persistentVolume:
       enabled: true
       storageClassName: local-path
       size: 1Gi
-
     retentionPeriod: 7d
-
     resources:
       requests:
         cpu: 50m
@@ -21,10 +18,8 @@ victoria-metrics-single:
       limits:
         cpu: 200m
         memory: 512Mi
-
     service:
       type: ClusterIP
-
     scrape:
       enabled: true
       config:
@@ -41,14 +36,12 @@ victoria-metrics-alert:
   server:
     fullnameOverride: vmalert
 
-    # Read metrics from VM Single
+    # VM datasource (keep your current service name)
     datasource:
       url: "http://victoria-alerts-vmsingle-server:8428"
 
-    # NOTE: remote read/write removed to avoid the duplicated /api/v1/write path issue.
-    # VMAlert does NOT need remote write for alerting-only use.
-
-    # Send to your existing Alertmanager
+    # No remote write/read needed for alerting-only (prevents duplicate /api/v1/write path issues)
+    # notifier -> your Alertmanager
     notifier:
       alertmanager:
         url: "http://alertmanager.alertmanager.svc:9093"
@@ -56,31 +49,41 @@ victoria-metrics-alert:
     extraArgs:
       evaluationInterval: 30s
 
-    # Rules use only KSM metrics; Completed pods are excluded by requiring Running/Pending==1
+    # Rules use only KSM metrics; Completed pods are excluded by requiring recent Running/Pending.
+    # CrashLoop uses restarts rate + a hold window to avoid flapping.
     config:
       alerts:
         groups:
           - name: k8s.pods.core
             rules:
-              # CrashLoopBackOff only if pod is Running or Pending (truthy)
-              - alert: KubePodCrashLoopBackOff
+              # CrashLoopBackOff (robust against Completed blips)
+              # Fires when restarts keep increasing; holds if pod has been Running/Pending at any time recently.
+              - alert: KubePodCrashLooping
                 expr: |
-                  (sum by (namespace, pod) (kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"}) > 0)
+                  (
+                    sum by (namespace, pod) (increase(kube_pod_container_status_restarts_total[10m])) >= 5
+                  )
                   and on (namespace, pod)
-                  (max by (namespace, pod) (kube_pod_status_phase{phase=~"Running|Pending"}) == 1)
-                for: 5m
+                  (
+                    max_over_time(kube_pod_status_phase{phase=~"Running|Pending"}[10m]) == 1
+                  )
+                for: 10m
                 labels: { severity: critical }
                 annotations:
-                  summary: "CrashLoopBackOff"
-                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} in CrashLoopBackOff >5m."
+                  summary: "CrashLooping (stable signal)"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is restarting rapidly."
 
-              # ImagePullBackOff only if pod is Running or Pending
+              # ImagePullBackOff (only when pod has been Running/Pending in the recent window)
               - alert: KubePodImagePullBackOff
                 expr: |
-                  (sum by (namespace, pod) (kube_pod_container_status_waiting_reason{reason="ImagePullBackOff"}) > 0)
+                  (
+                    sum by (namespace, pod) (kube_pod_container_status_waiting_reason{reason="ImagePullBackOff"}) > 0
+                  )
                   and on (namespace, pod)
-                  (max by (namespace, pod) (kube_pod_status_phase{phase=~"Running|Pending"}) == 1)
-                for: 5m
+                  (
+                    max_over_time(kube_pod_status_phase{phase=~"Running|Pending"}[10m]) == 1
+                  )
+                for: 10m
                 labels: { severity: warning }
                 annotations:
                   summary: "ImagePullBackOff"
@@ -89,31 +92,39 @@ victoria-metrics-alert:
               # Pending too long (naturally excludes Succeeded)
               - alert: KubePodPendingTooLong
                 expr: max by (namespace, pod) (kube_pod_status_phase{phase="Pending"}) > 0
+                for: 15m
+                labels: { severity: warning }
+                annotations:
+                  summary: "Pod pending >15m"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} pending >15m."
+
+              # Not Ready only if pod has been Running recently (ignore Completed pods)
+              - alert: KubePodNotReady
+                expr: |
+                  (
+                    max by (namespace, pod) (kube_pod_status_ready{condition="true"} == 0) > 0
+                  )
+                  and on (namespace, pod)
+                  (
+                    max_over_time(kube_pod_status_phase{phase="Running"}[10m]) == 1
+                  )
                 for: 10m
                 labels: { severity: warning }
                 annotations:
-                  summary: "Pod pending >10m"
-                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} pending >10m."
+                  summary: "Pod not Ready (stable)"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} not Ready for >10m."
 
-              # Not Ready only if pod is Running
-              - alert: KubePodNotReady
-                expr: |
-                  (max by (namespace, pod) (kube_pod_status_ready{condition="true"} == 0) > 0)
-                  and on (namespace, pod)
-                  (max by (namespace, pod) (kube_pod_status_phase{phase="Running"}) == 1)
-                for: 5m
-                labels: { severity: warning }
-                annotations:
-                  summary: "Pod not Ready >5m"
-                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} not Ready >5m."
-
-              # OOMKilled only if pod is Running or Pending
+              # OOMKilled only if pod has been Running/Pending recently (avoid Completed noise)
               - alert: KubePodOOMKilled
                 expr: |
-                  (sum by (namespace, pod) (kube_pod_container_status_terminated_reason{reason="OOMKilled"}) > 0)
+                  (
+                    sum by (namespace, pod) (kube_pod_container_status_terminated_reason{reason="OOMKilled"}) > 0
+                  )
                   and on (namespace, pod)
-                  (max by (namespace, pod) (kube_pod_status_phase{phase=~"Running|Pending"}) == 1)
-                for: 1m
+                  (
+                    max_over_time(kube_pod_status_phase{phase=~"Running|Pending"}[10m]) == 1
+                  )
+                for: 5m
                 labels: { severity: critical }
                 annotations:
                   summary: "OOMKilled"
