@@ -5,7 +5,7 @@ kube-state-metrics:
 
 # --- VictoriaMetrics Single (tiny TSDB; only scraped KSM) ---
 victoria-metrics-single:
-  # Ensures the Service name matches your current deployment
+  # Ensures the Service name becomes: victoria-alerts-vmsingle-server (with your release name)
   nameOverride: vmsingle
 
   server:
@@ -67,34 +67,63 @@ victoria-metrics-alert:
       evaluationInterval: 30s
 
     # Inline alert rules using ONLY kube-state-metrics metrics
+    # Only alert for pods that are Running (or Pending where it makes sense),
+    # so Completed (Succeeded) pods are ignored.
     config:
       alerts:
         groups:
           - name: k8s.pods.core
             rules:
-              # CrashLoopBackOff (ignore Completed pods)
+              # CrashLoopBackOff only if pod is Running or Pending
               - alert: KubePodCrashLoopBackOff
                 expr: |
-                  sum by (namespace, pod) (kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"})
-                  unless on (namespace, pod) kube_pod_status_phase{phase="Succeeded"}
+                  (sum by (namespace, pod) (kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"}) > 0)
+                  and on (namespace, pod) kube_pod_status_phase{phase=~"Running|Pending"}
                 for: 5m
                 labels: { severity: critical }
                 annotations:
                   summary: "CrashLoopBackOff"
                   description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} in CrashLoopBackOff >5m."
 
-              # ImagePullBackOff (ignore Completed pods)
+              # ImagePullBackOff only if pod is Running or Pending
               - alert: KubePodImagePullBackOff
                 expr: |
-                  sum by (namespace, pod) (kube_pod_container_status_waiting_reason{reason="ImagePullBackOff"})
-                  unless on (namespace, pod) kube_pod_status_phase{phase="Succeeded"}
+                  (sum by (namespace, pod) (kube_pod_container_status_waiting_reason{reason="ImagePullBackOff"}) > 0)
+                  and on (namespace, pod) kube_pod_status_phase{phase=~"Running|Pending"}
                 for: 5m
                 labels: { severity: warning }
                 annotations:
                   summary: "ImagePullBackOff"
                   description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} failing to pull image."
 
-              # Pending too long (ignore Completed pods)
+              # Pending too long (already scoped to Pending phase)
               - alert: KubePodPendingTooLong
                 expr: |
-                  max by (namespace, pod) (kube_pod_statu
+                  max by (namespace, pod) (kube_pod_status_phase{phase="Pending"}) > 0
+                for: 10m
+                labels: { severity: warning }
+                annotations:
+                  summary: "Pod pending >10m"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} pending >10m."
+
+              # Not Ready only if pod is Running
+              - alert: KubePodNotReady
+                expr: |
+                  ((max by (namespace, pod) (kube_pod_status_ready{condition="true"} == 0)) > 0)
+                  and on (namespace, pod) kube_pod_status_phase{phase="Running"}
+                for: 5m
+                labels: { severity: warning }
+                annotations:
+                  summary: "Pod not Ready >5m"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} not Ready >5m."
+
+              # OOMKilled only if pod is Running or Pending (ignore finished pods)
+              - alert: KubePodOOMKilled
+                expr: |
+                  (sum by (namespace, pod) (kube_pod_container_status_terminated_reason{reason="OOMKilled"}) > 0)
+                  and on (namespace, pod) kube_pod_status_phase{phase=~"Running|Pending"}
+                for: 1m
+                labels: { severity: critical }
+                annotations:
+                  summary: "OOMKilled"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} had container(s) OOMKilled."
