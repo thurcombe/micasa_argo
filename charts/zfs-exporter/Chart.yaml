@@ -1,10 +1,10 @@
 apiVersion: v2
 name: zfs-exporter
-description: Run pdf/zfs_exporter via bjw-s/app-template (DaemonSet + Service). No CRDs.
+description: ZFS metrics exporter (DaemonSet + Service). No CRDs.
 type: application
 version: 1.0.0
 
 dependencies:
-  - name: app-template
-    version: 4.2.0
-    repository: https://bjw-s.github.io/helm-charts/
+  - name: zfs-exporter
+    version: 2.1.1
+    repository: https://charts.enix.io/
