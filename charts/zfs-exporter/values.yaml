@@ -31,6 +31,15 @@ zfs-exporter:
   prometheusRule:
     enabled: false
 
+  monitoring:
+    serviceMonitor:
+      enabled: false
+    podMonitor:
+      enabled: false
+    prometheusRule:
+      enabled: false
+      
+
   # Needs host ZFS access
   securityContext:
     privileged: true
