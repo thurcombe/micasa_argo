@@ -1,0 +1,9 @@
+apiVersion: v2
+name: zfs-exporter
+version: 1.0.0
+
+# Helm dependency (OCI)
+dependencies:
+  - name: zfs-exporter
+    version: 2.1.1        # chart version (not the app version)
+    repository: oci://registry-1.docker.io/enix
