@@ -49,14 +49,14 @@ victoria-metrics-alert:
     # Correct keys per chart docs:
     # vmalert reads from VM Single’s Prom-compatible API
     datasource:
-      url: "http://vmsingle-victoria-metrics-single-server:8428"
+      url: "http://victoria-alerts-vmsingle-server:8428"
 
     # (Optional) persist recording rules / alert state; not required for alerting-only
     remote:
       write:
-        url: "http://vmsingle-victoria-metrics-single-server:8428/api/v1/write"
+        url: "http://victoria-alerts-vmsingle-server:8428/api/v1/write"
       read:
-        url: "http://vmsingle-victoria-metrics-single-server:8428"
+        url: "http://victoria-alerts-vmsingle-server:8428"
 
     # Send to your existing Alertmanager Service
     notifier:
