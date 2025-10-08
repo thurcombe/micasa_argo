@@ -1,22 +1,22 @@
-# ---- kube-state-metrics (lightweight source of pod/object status) ----
+# --- kube-state-metrics (metrics source for pod state) ---
 kube-state-metrics:
-  # keep it in the same namespace as this release so we can use short DNS names
+  # Stable name so the Service is just "kube-state-metrics" on port 8080
   fullnameOverride: kube-state-metrics
-  # defaults are fine; exposes port 8080 with /metrics
 
-# ---- VictoriaMetrics Single (tiny TSDB just for vmalert state + quick queries) ----
+# --- VictoriaMetrics Single (tiny TSDB; only scraped KSM) ---
 victoria-metrics-single:
-  # Small, predictable base name so the service becomes:
-  #   vmsingle-victoria-metrics-single-server
+  # Ensures the Service name becomes: vmsingle-victoria-metrics-single-server
   nameOverride: vmsingle
 
   server:
-    # Keep it ephemeral for now to avoid StorageClass drama; flip to true later if you want retention across restarts.
+    # keep ephemeral for now; flip to true + storageClassName later if you want persistence
     persistentVolume:
-      enabled: false
-      # storageClassName: ""   # set when you re-enable persistence
-      # size: 5Gi
+      enabled: true
+      storageClassName: local-path
+      size: 1Gi
+
     retentionPeriod: 7d
+
     resources:
       requests:
         cpu: 50m
@@ -28,98 +28,87 @@ victoria-metrics-single:
     service:
       type: ClusterIP
 
-    # IMPORTANT: promscrape config must be an OBJECT, not a string.
     scrape:
       enabled: true
+      # IMPORTANT: must be a YAML OBJECT (not a block string)
       config:
         global:
           scrape_interval: 30s
-          evaluation_interval: 30s
           scrape_timeout: 10s
-
         scrape_configs:
-          # Only scrape kube-state-metrics; nothing else to keep it light.
-          - job_name: kube-state-metrics
+          - job_name: "kube-state-metrics"
             static_configs:
-              - targets:
-                  - "kube-state-metrics:8080"
+              - targets: ["kube-state-metrics:8080"]
 
-# ---- VMAlert (executes rules, writes state to VM, sends to your Alertmanager) ----
+# --- VMAlert (evaluates rules, alerts to your existing Alertmanager) ---
 victoria-metrics-alert:
-  nameOverride: vmalert
+  server:
+    # Optional, but keeps names short
+    fullnameOverride: vmalert
 
-  # vmalert needs a datasource (Prom-compatible API). Use the VM Single service name from this chart:
-  #   <nameOverride>-victoria-metrics-single-server
-  datasource:
-    url: "http://vmsingle-victoria-metrics-single-server:8428"
+    # Correct keys per chart docs:
+    # vmalert reads from VM Single’s Prom-compatible API
+    datasource:
+      url: "http://vmsingle-victoria-metrics-single-server:8428"
 
-  # Persist rule results & alert state; VM’s remote_write endpoint
-  remoteWrite:
-    url: "http://vmsingle-victoria-metrics-single-server:8428/api/v1/write"
+    # (Optional) persist recording rules / alert state; not required for alerting-only
+    remote:
+      write:
+        url: "http://vmsingle-victoria-metrics-single-server:8428/api/v1/write"
+      read:
+        url: "http://vmsingle-victoria-metrics-single-server:8428"
 
-  # (Optional) allow remote reads for recording rules reuse
-  remoteRead:
-    url: "http://vmsingle-victoria-metrics-single-server:8428"
+    # Send to your existing Alertmanager Service
+    notifier:
+      alertmanager:
+        url: "http://alertmanager.alertmanager.svc:9093"
 
-  # Point at your existing Alertmanager service
-  notifier:
-    url: "http://alertmanager.alertmanager.svc:9093"
+    # vmalert flag -> evaluate every 30s
+    extraArgs:
+      evaluationInterval: 30s
 
-  extraArgs:
-    # Faster feedback loop without being noisy
-    evaluationInterval: "30s"
+    # Inline alert rules using ONLY kube-state-metrics metrics
+    config:
+      alerts:
+        groups:
+          - name: k8s.pods.core
+            rules:
+              - alert: KubePodCrashLoopBackOff
+                expr: sum by (namespace, pod) (kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"}) > 0
+                for: 5m
+                labels: { severity: critical }
+                annotations:
+                  summary: "CrashLoopBackOff"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} in CrashLoopBackOff >5m."
 
-  # Inline rules — only pod health stuff; lean and focused.
-  config:
-    groups:
-      - name: k8s.pods.core
-        rules:
-          # Pod Pending too long
-          - alert: KubePodPendingTooLong
-            expr: max by (namespace, pod) (kube_pod_status_phase{phase="Pending"}) > 0
-            for: 10m
-            labels:
-              severity: warning
-            annotations:
-              summary: "Pod pending >10m"
-              description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} has been Pending for over 10 minutes."
+              - alert: KubePodImagePullBackOff
+                expr: sum by (namespace, pod) (kube_pod_container_status_waiting_reason{reason="ImagePullBackOff"}) > 0
+                for: 5m
+                labels: { severity: warning }
+                annotations:
+                  summary: "ImagePullBackOff"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} failing to pull image."
 
-          # Pod not Ready
-          - alert: KubePodNotReady
-            expr: max by (namespace, pod) (kube_pod_status_ready{condition="true"}) == 0
-            for: 5m
-            labels:
-              severity: warning
-            annotations:
-              summary: "Pod not Ready >5m"
-              description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} not Ready for >5 minutes."
+              - alert: KubePodPendingTooLong
+                expr: max by (namespace, pod) (kube_pod_status_phase{phase="Pending"}) > 0
+                for: 10m
+                labels: { severity: warning }
+                annotations:
+                  summary: "Pod pending >10m"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} pending >10m."
 
-          # CrashLoopBackOff
-          - alert: KubePodCrashLoopBackOff
-            expr: sum by (namespace, pod) (kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"}) > 0
-            for: 5m
-            labels:
-              severity: critical
-            annotations:
-              summary: "CrashLoopBackOff"
-              description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is CrashLoopBackOff for >5 minutes."
+              - alert: KubePodNotReady
+                expr: max by (namespace, pod) (kube_pod_status_ready{condition="true"}) == 0
+                for: 5m
+                labels: { severity: warning }
+                annotations:
+                  summary: "Pod not Ready >5m"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} not Ready >5m."
 
-          # ImagePullBackOff
-          - alert: KubePodImagePullBackOff
-            expr: sum by (namespace, pod) (kube_pod_container_status_waiting_reason{reason="ImagePullBackOff"}) > 0
-            for: 5m
-            labels:
-              severity: warning
-            annotations:
-              summary: "ImagePullBackOff"
-              description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} failing to pull image."
-
-          # OOMKilled
-          - alert: KubePodOOMKilled
-            expr: sum by (namespace, pod) (kube_pod_container_status_terminated_reason{reason="OOMKilled"}) > 0
-            for: 1m
-            labels:
-              severity: critical
-            annotations:
-              summary: "OOMKilled"
-              description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} had a container OOMKilled."
+              - alert: KubePodOOMKilled
+                expr: sum by (namespace, pod) (kube_pod_container_status_terminated_reason{reason="OOMKilled"}) > 0
+                for: 1m
+                labels: { severity: critical }
+                annotations:
+                  summary: "OOMKilled"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} had container(s) OOMKilled."
