@@ -1,0 +1,18 @@
+apiVersion: v2
+name: k8s-pod-alerts-lite
+description: K8s pod alerts via VictoriaMetrics Single + vmalert + kube-state-metrics
+type: application
+version: 1.0.0
+
+dependencies:
+  - name: kube-state-metrics
+    version: 6.x.x
+    repository: https://prometheus-community.github.io/helm-charts
+
+  - name: victoria-metrics-single
+    version: 0.18.x
+    repository: https://victoriametrics.github.io/helm-charts
+
+  - name: victoria-metrics-alert
+    version: 0.18.x
+    repository: https://victoriametrics.github.io/helm-charts
