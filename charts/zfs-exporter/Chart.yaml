@@ -1,9 +1,10 @@
 apiVersion: v2
-name: zfs-exporter
+name: zfs-monitoring
+description: Lightweight ZFS exporter deployment (as a dependency) for VM/vmalert + Alertmanager setups
+type: application
 version: 1.0.0
 
-# Helm dependency (OCI)
 dependencies:
   - name: zfs-exporter
-    version: 2.1.1        # chart version (not the app version)
-    repository: oci://registry-1.docker.io/enix
+    version: 2.1.1         # chart version from charts.enix.io (regular Helm repo)
+    repository: https://charts.enix.io/

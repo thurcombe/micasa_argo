@@ -1,20 +1,24 @@
+# All values are passed to the dependency chart "zfs-exporter".
+# This config runs the exporter as a DaemonSet on your k3s node, exposes :9134,
+# and mounts the host's ZFS bits so metrics include pool health.
+
 zfs-exporter:
   fullnameOverride: zfs-exporter
   kind: DaemonSet
 
   image:
     repository: enix/zfs-exporter
-    tag: "2.3.10"
+    tag: "2.3.10"           # exporter app version
     pullPolicy: IfNotPresent
 
-  # Exporter flags (from upstream README)
+  # Exporter flags (keep it lean; enable snapshots if desired)
   args:
     - --deadline=8s
     - --web.listen-address=:9134
     - --collector.pool
     - --collector.dataset-filesystem
     - --collector.dataset-volume
-    # - --collector.dataset-snapshot  # enable if you want snapshot metrics too
+    # - --collector.dataset-snapshot
 
   service:
     enabled: true
@@ -25,6 +29,7 @@ zfs-exporter:
   securityContext:
     privileged: true
     runAsUser: 0
+
   extraVolumes:
     - name: dev
       hostPath: { path: /dev }
@@ -34,6 +39,7 @@ zfs-exporter:
       hostPath: { path: /usr/sbin }
     - name: sbin
       hostPath: { path: /sbin }
+
   extraVolumeMounts:
     - { name: dev,      mountPath: /dev }
     - { name: etc-zfs,  mountPath: /etc/zfs,  readOnly: true }
@@ -44,4 +50,5 @@ zfs-exporter:
     kubernetes.io/os: linux
   tolerations:
     - operator: Exists
-  resources: {}
+
+  resources: {}  # tune if you want
