@@ -1,79 +1,139 @@
-# --- kube-state-metrics ---
-kube-state-metrics: {}
+# ----------------------------
+# kube-state-metrics (KSM)
+# ----------------------------
+kube-state-metrics:
+  # The vmsingle scrape config discovers KSM via labels; no hardcoded service names.
+  # Defaults are fine; keep footprint small.
+  replicas: 1
+  prometheusScrape: true
 
-# --- VictoriaMetrics Single ---
+# ----------------------------
+# VictoriaMetrics Single (TSDB)
+# ----------------------------
 victoria-metrics-single:
   server:
-    retentionPeriod: 15d
+    # Make the service name deterministic so vmalert can point to it cleanly.
+    fullnameOverride: vmsingle
+
+    # Storage (uses your cluster default StorageClass if not set).
     persistentVolume:
       enabled: true
-      size: 1Gi
-      storageClassName: local-path
-    resources:
-      requests:
-        cpu: 50m
-        memory: 256Mi
-      limits:
-        memory: 512Mi
+      size: 5Gi
+      storageClassName: ""  # leave empty to use your cluster default SC
 
-    # ✅ enable inline scrape config and point it at kube-state-metrics
+    # Retention (adjust if you want more days; this keeps it light).
+    retentionPeriod: 7d
+
+    # Minimal built-in scraping: itself + kube-state-metrics via k8s SD.
     scrape:
       enabled: true
-      config: |
+      # IMPORTANT: config must be a YAML map (not a block string)
+      config:
         global:
           scrape_interval: 30s
-        scrape_configs:
-          - job_name: "kube-state-metrics"
-            static_configs:
-              - targets: ["victoria-alerts-kube-state-metrics.monitoring.svc:8080"]
+          scrape_timeout: 10s
 
-# --- vmalert (VictoriaMetrics Alert) ---
+        scrape_configs:
+          # Self-scrape
+          - job_name: "victoriametrics-self"
+            static_configs:
+              - targets: ["localhost:8428"]
+
+          # kube-state-metrics — discover by label, ignore release/namespace names
+          - job_name: "kube-state-metrics"
+            kubernetes_sd_configs:
+              - role: endpoints
+            relabel_configs:
+              # Keep only services with the standard KSM chart label
+              - action: keep
+                source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+                regex: kube-state-metrics
+              # Keep the metrics port
+              - action: keep
+                source_labels: [__meta_kubernetes_endpoint_port_name]
+                regex: (http-metrics|https-main)
+
+# ----------------------------
+# vmalert (alerts -> your Alertmanager)
+# ----------------------------
 victoria-metrics-alert:
   server:
-    # ✅ REQUIRED: where vmalert reads metrics (Prometheus-compatible API)
-    datasource:
-      url: "http://victoria-alerts-victoria-metrics-single.monitoring.svc:8428"
+    # Deterministic name (handy if you ever need to point things at vmalert)
+    fullnameOverride: vmalert
 
-    # ✅ where vmalert sends alerts (your existing Alertmanager)
+    # Where vmalert reads metrics (the VM single we defined above)
+    datasource:
+      url: "http://vmsingle:8428"
+
+    # Persist alert state across restarts (optional but recommended)
+    remote:
+      write:
+        url: "http://vmsingle:8428"
+      read:
+        url: "http://vmsingle:8428"
+
+    # Send alerts to your existing Alertmanager (you said it's alertmanager.alertmanager.svc:9093)
     notifier:
       alertmanager:
         url: "http://alertmanager.alertmanager.svc:9093"
 
-    # ✅ the actual alert rules you wanted
+    # Evaluate rules frequently without being noisy
+    extraArgs:
+      evaluationInterval: 30s
+
+    # Inline rules (no external files; Argo-friendly)
+    # These depend only on kube-state-metrics; no Prom stack required.
     config:
       alerts:
         groups:
-          - name: "kubernetes.pods.light"
-            interval: "30s"
+          - name: k8s.pods.core
             rules:
+              # CrashLoopBackOff
               - alert: KubePodCrashLooping
-                expr: max_over_time(kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"}[5m]) >= 1
+                expr: sum by (namespace, pod) (kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"}) > 0
                 for: 2m
-                labels: { severity: critical }
+                labels:
+                  severity: warning
                 annotations:
-                  summary: "Pod crash looping ({{ $labels.namespace }}/{{ $labels.pod }})"
-                  description: "Container {{ $labels.container }} is in CrashLoopBackOff."
+                  summary: "Pod crash looping"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} has a container in CrashLoopBackOff."
 
-              - alert: KubePodImagePullBackOff
-                expr: max_over_time(kube_pod_container_status_waiting_reason{reason=~"ImagePullBackOff|ErrImagePull"}[5m]) >= 1
+              # Image pull errors
+              - alert: KubePodImagePullError
+                expr: sum by (namespace, pod) (kube_pod_container_status_waiting_reason{reason=~"ImagePullBackOff|ErrImagePull"}) > 0
                 for: 5m
-                labels: { severity: warning }
+                labels:
+                  severity: warning
                 annotations:
-                  summary: "Image pull issue ({{ $labels.namespace }}/{{ $labels.pod }})"
-                  description: "Container {{ $labels.container }} has image pull errors."
+                  summary: "Pod image pull error"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} has image pull issues."
 
-              - alert: KubePodPendingTooLong
-                expr: sum by (namespace,pod) (kube_pod_status_phase{phase="Pending"}) > 0
-                for: 10m
-                labels: { severity: warning }
-                annotations:
-                  summary: "Pod pending >10m ({{ $labels.namespace }}/{{ $labels.pod }})"
-                  description: "Pod has been Pending for over 10 minutes."
-
+              # Not Ready (pod condition Ready=false)
               - alert: KubePodNotReady
-                expr: sum by (namespace,pod) (kube_pod_status_ready{condition="true"}) < 1
-                for: 5m
-                labels: { severity: critical }
+                expr: sum by (namespace, pod) (kube_pod_status_ready{condition="true"} == 0) > 0
+                for: 10m
+                labels:
+                  severity: warning
                 annotations:
-                  summary: "Pod not ready ({{ $labels.namespace }}/{{ $labels.pod }})"
-                  description: "Pod has no Ready containers for 5 minutes."
+                  summary: "Pod not ready"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is not Ready for >10m."
+
+              # Pending too long
+              - alert: KubePodPendingTooLong
+                expr: sum by (namespace, pod) (kube_pod_status_phase{phase="Pending"}) > 0
+                for: 15m
+                labels:
+                  severity: warning
+                annotations:
+                  summary: "Pod stuck Pending"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} has been Pending for >15m."
+
+              # OOMKilled container(s)
+              - alert: KubePodOOMKilled
+                expr: sum by (namespace, pod) (kube_pod_container_status_terminated_reason{reason="OOMKilled"}) > 0
+                for: 0m
+                labels:
+                  severity: critical
+                annotations:
+                  summary: "Pod OOMKilled"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} had container(s) OOMKilled."
