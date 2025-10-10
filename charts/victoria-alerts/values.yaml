@@ -52,20 +52,6 @@ victoria-metrics-alert:
     config:
       alerts:
         groups:
-          - name: zfs
-            interval: 30s
-            rules:
-              - alert: ZpoolDegraded
-                # Preferred: pdf/zfs_exporter exposes a pool metric with a "health" label.
-                expr: count by (pool, instance, health) (zfs_pool_health{health!="SOMETHING"}) > 0
-                # If your install exposes "health" as a property label instead, use this instead:
-                # expr: count by (pool, instance, health) (zfs_pool_property{property="health", health!="ONLINE"}) > 0
-                for: 2m
-                labels:
-                  severity: critical
-                annotations:
-                  summary: "ZFS pool {{ $labels.pool }} degraded on {{ $labels.instance }}"
-                  description: "health={{ $labels.health }} (expected ONLINE)"
           - name: k8s.pods.core
             rules:
               # CrashLoopBackOff (windowed to prevent flapping across brief 'Completed' hops)
