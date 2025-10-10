@@ -3,6 +3,7 @@ rke2-multus:
     cni_conf:
       confDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
       binDir: /var/lib/rancher/k3s/data/cni/
+      multusAutoconfigDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
       kubeconfig: /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig
   manifests:
     dhcpDaemonSet: true
