@@ -134,6 +134,7 @@ mailu:
         *@slots99.com
         *@*.slots99.com
         onlinebingooffers@outlook.com
+        freespinsonline@outlook.com
   fetchmail:
     enabled: true
     logLevel: debug
