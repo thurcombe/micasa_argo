@@ -28,7 +28,7 @@ jellyfin:
           - name: jellyfin-config
             storageClassName: "zfs"
             accessMode: "ReadWriteOnce"
-            size: 1G
+            size: 5G
           - name: media
             existingClaimName: media
         volumeMounts:
