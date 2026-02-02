@@ -1,6 +1,5 @@
 jellyfin:
-    image:
-      tag: "10.10.7"
+    image: {}
     service:
         type: ClusterIP
         port: 8096
